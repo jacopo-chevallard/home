@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/Users/jchevall/Coding/mcfor/src'
+let g:netrw_dirhist_2='/Users/jchevall/Coding/mcfor'
+let g:netrw_dirhist_3='/Users/jchevall/JWST/Simulations/March_2016/Pierre/Selected_Giovanna'
+let g:netrw_dirhist_4='/Users/jchevall/Coding/mcfor/CMake'
+let g:netrw_dirhist_5='/Users/jchevall/Coding/External/FPL/src/examples/extend_wrappers'
+let g:netrw_dirhist_6='/Users/jchevall/Coding/mcfor/Cmake'
+let g:netrw_dirhist_7='/Users/jchevall/Coding/mcfor/cmake/fpl'
+let g:netrw_dirhist_8='/Users/jchevall/Coding/BEAGLE/dependencies'
+let g:netrw_dirhist_9='/Users/jchevall/Coding/BEAGLE/logo'
