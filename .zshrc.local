@@ -1,0 +1,197 @@
+
+export PATH="$PATH:/usr/local:/usr/local/bin:/opt/local/share/texmf-texlive/dvips/base:/bin:/usr/texbin:/Users/jchevall/bin:/Users/jchevall/bc99lx/bc03/src:/Users/jchevall/bc99lx/Mock:/Users/jchevall/bc99lx/is_97:/Users/jchevall/MILLENNIUM:/Users/jchevall/IDL:/Users/jchevall/idlutils/bin:/Applications/rsi/idl/bin:/Users/jchevall/TeX:/opt/openmpi/bin:opt/local/bin:/Users/jchevall/Bin:/Users/jchevall/profilers/TAU/apple/bin"
+
+export PATH="/Users/jchevall/anaconda/bin:/usr/local/bin:/usr/local/Cellar/open-mpi/2.0.1/lib:/usr/local/Cellar/open-mpi/2.0.1/include:$PATH"
+
+# Avoid shared history
+unsetopt share_history
+
+# Syntax highlighting
+export LSCOLORS="gxfxcxdxfxegedabagacad"
+
+# Sonos
+alias airsonos="n use 0.10.28 /usr/local/bin/airsonos"
+
+# GNU sed
+alias sed="gsed"
+
+# Further syntax coloring with zprezto (see /Users/jchevall/.zprezto/modules/syntax-highlighting/README)
+ZSH_HIGHLIGHT_STYLES[globbing]='none'
+
+# Use OpenBLAS with a single thread
+export OPENBLAS_NUM_THREADS=1
+
+# Avoid creation of spurious files when creating tar archive on a Mac OSX
+export COPYFILE_DISABLE=true
+
+# Default editor
+export EDITOR="vim"
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# Python - Homebrew related stuff
+export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+export GTK_PATH="/usr/local/lib/gtk-2.0"
+
+export HOMEBREW_GITHUB_API_TOKEN="7de96236b5b619d6e70682138ddb016c2eddad0a"
+
+alias push_docs="git add -u ; git commit -m \"Updated docs\" ;  git push origin master"
+
+alias gittag="git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags"
+
+export PYTHONPATH="/Users/jchevall/python:/Users/jchevall/JWST/code" 
+
+export JWSTPYTOOLS="/Users/jchevall/JWST/code/JWST_Python_tools/JWSTpytools"
+
+# This solves some installation issues with Python Anaconda and UTF-8 encoding
+# see http://stackoverflow.com/questions/19961239/pelican-3-3-pelican-quickstart-error-valueerror-unknown-locale-utf-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+# Default Fortran compiler
+GCC_VER="6"
+export FC="/usr/local/bin/gfortran-${GCC_VER}"
+
+# Default C compiler
+export CC="/usr/local/bin/gcc-${GCC_VER}"
+
+# Default C++ compiler
+export CXX="/usr/local/bin/g++-${GCC_VER}"
+
+# OpenMPI variables
+export OMPI_FC=$FC
+export OMPI_CC=$CC
+export OMPI_CXX=$CXX
+
+# Intel Fortran
+source /opt/intel/composer_xe_2015.1.108/mkl/bin/intel64/mklvars_intel64.sh
+
+# Default print: two-sided, A4
+alias lp_default="lp -o sides=two-sided-long-edge -o media=A4"
+
+# MPI env
+alias g++="g++-"${GCC_VER}
+alias gcc="gcc-"${GCC_VER}
+alias gfortran="gfortran-${GCC_VER} -ffree-line-length-none"
+alias gnu95="gfortran-${GCC_VER} -ffree-line-length-none"
+
+# BC03 software stuff
+export bc97="/Users/jchevall/bc99lx"
+export bc03="/Users/jchevall/bc99lx/bc03/src"
+source	$bc03/.bc_bash
+
+alias bc99="csh $bc97/is_97/bc99.sh"
+alias cb09="csh $bc97/is_97/cb09.sh"
+alias iso99="csh $bc97/Isochrones/isoc_bc99.sh"
+
+###################################################
+# START BEAGLE environment variables
+###################################################
+export CMAKE_MACROS="/Users/jchevall/Coding/cmake-macros"
+export CMAKE_DEPENDENCIES="/Users/jchevall/Coding/cmake-dependencies"
+export BEAGLE_PARAM_DIR="/Users/jchevall/Coding/BEAGLE/files/params"
+
+export BEAGLE_TEST_FILES="/Users/jchevall/Coding/BEAGLE/files/tests"
+
+export BEAGLE_ROOT="/Users/jchevall/Coding/BEAGLE/files"
+
+export BEAGLE_TEMPLATES="${BEAGLE_ROOT}/templates"
+export BEAGLE_FILTERS="${BEAGLE_ROOT}/filters"
+export BEAGLE_DATA="${BEAGLE_ROOT}/data"
+export BEAGLE_DUST="${BEAGLE_ROOT}/dust"
+
+export BEAGLE_SF_CHE="${BEAGLE_ROOT}/sf_che"
+export BEAGLE_RESULTS="${BEAGLE_ROOT}/results"
+
+export PYP_BEAGLE="/Users/jchevall/Coding/PyP-BEAGLE"
+
+# This environment variable is already defined by BC03 routines, but here you
+# redefine it to be sure that the filters used are those in the BEAGLE directory
+# tree 
+export FILTERS="${BEAGLE_FILTERS}/FILTERBIN.RES"
+
+###################################################
+# END BEAGLE environment variables
+###################################################
+
+# To split a PDF in several PDF with N pages each
+alias PDFsplit="/Users/jchevall/bin/PDFsplit.py"
+
+alias fv="open -a fv"
+
+# Tmuxinator
+source ~/bin/tmuxinator.zsh
+
+# Bash, Zsh and fish completion support for git-flow (AVH Edition).
+# see https://github.com/petervanderdoes/git-flow-completion
+source ~/.git-flow-completion.zsh
+
+# IDL
+export IDLUTILS_DIR="/Users/jchevall/idlutils"
+export IDL_DIR="/Applications/exelis/idl84"
+export IDL_PATH="/Users/jchevall/IDL:$IDL_DIR/lib:$IDLUTILS_DIR/pro:$IDLUTILS_DIR/goddard/pro"
+export IDL_STARTUP="/Users/jchevall/IDL/idl_startup.pro"
+
+alias	idl="$IDL_DIR/bin/idl"
+
+# UREKA (includes IRAF and toher stuff)
+alias ureka="open ~/Desktop/Ureka_primary.terminal"
+
+alias openprev="open -a preview"
+
+alias update_zsh="source ~/.zshrc.local ; rehash"
+
+# Default commands for ps2eps conversion
+alias myps2eps="ps2eps -B -f -l -H"
+alias myps2eps_land="ps2eps -B -f -l -H -R -"
+alias myps2eps_land_anti="ps2eps -B -f -l -H -R +"
+
+alias sam2p_300="sam2p -l:gs=-r300"
+alias sam2p_800="sam2p -l:gs=-r800"
+
+# GOOGLE PROFILER
+export HEAP_PROFILE_ALLOCATION_INTERVAL=10737418240 
+export CPUPROFILE_FREQUENCY=1000
+
+#########################
+##### Other aliases ####
+#########################
+#
+# Common aliases
+alias rsync="rsync -avz"
+alias cp="cp -p"
+alias scp="scp -p"
+#
+alias del="mv -i \!* ~/.Trash"
+
+alias df90="cd /Users/jchevall/bc99lx/Mock/F90/NEW_F90/F90_TO_RELEASE"
+
+# ---> Tmux
+alias tmux="tmux -u"
+
+# ---> MATLAB
+alias	matlab="/Applications/MATLAB_R2011b.app/bin/matlab"
+
+# ---> TextEdit
+alias	textedit="/Applications/TextEdit.app/Contents/MacOS/TextEdit"
+
+# ---> TextWrangler
+alias	wrang="/Applications/TextWrangler.app/Contents/MacOS/TextWrangler"
+
+
+# Close windows though terminal command
+# cw Adobe\ Reader foo.pdf
+# will close foo.pdf
+cw() {
+osascript <<EOF
+tell application "$1"
+    set windowCount to number of windows
+    repeat with x from 1 to windowCount
+        set docName to (name of document of front window)
+        if (docName is equal to "$2") then
+            close window x
+        end if
+    end repeat
+end tell
+EOF
+}
