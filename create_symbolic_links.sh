@@ -23,8 +23,8 @@ fi
 
 for file in bin/*; do 
   file_name=$(basename "$file")
-  new_file=$dir/$file_name
-  local_file=~/bin/$file_name
+  new_file=$dir/bin/$file_name
+  local_file=$HOME/bin/$file_name
   if [ -f $local_file ] ; then
     echo ''
     echo WARNING: The $local_file file already exists.
@@ -32,7 +32,7 @@ for file in bin/*; do
   fi
   if [ ! -f $local_file ] ; then
     echo Creating symbolic link of $new_file
-    ln -s $new_file $local_file
+    ln -sf $new_file $local_file
   fi
 done
 
