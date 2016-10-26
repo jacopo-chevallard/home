@@ -52,7 +52,7 @@ for file in "${files[@]}"; do
 done
 
 # Check if files exist
-files=( .vimrc .zshrc.local .matplotlib/matplotlibrc )
+files=( .vimrc .zshrc.local .matplotlib/matplotlibrc .tmux.conf )
 for file in "${files[@]}"; do 
   local_file=~/$file
   new_file=$dir/$file
