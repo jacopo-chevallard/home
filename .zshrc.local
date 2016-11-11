@@ -6,6 +6,9 @@ export PATH="/Users/jchevall/anaconda/bin:/usr/local/bin:/usr/local/Cellar/open-
 # Avoid shared history
 unsetopt share_history
 
+# TOPCAT
+alias topcat="java -Xmx1024M -jar /Applications/TOPCAT.app/Contents/Resources/Java/topcat-full.jar"
+
 # Syntax highlighting
 export LSCOLORS="gxfxcxdxfxegedabagacad"
 
