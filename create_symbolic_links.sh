@@ -81,7 +81,7 @@ for file in bin/*; do
 done
 
 # Check if directories exist
-files=( .vim .zprezto )
+files=( .vim .zprezto .tmux )
 for file in "${files[@]}"; do 
   local_file=~/$file
   new_file=$dir/$file
