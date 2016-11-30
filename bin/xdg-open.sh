@@ -6,7 +6,7 @@ if hash xdg-open 2>/dev/null; then
     xdg-open &> /dev/null
   else
     for file in "$@"; do
-      xdg-open "$file" &> /dev/null
+      xdg-open "$file" &> /dev/null &
     done
   fi
 
