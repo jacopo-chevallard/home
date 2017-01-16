@@ -38,6 +38,15 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
+        '--ID-key',
+        help="Column name containing object IDs",
+        action="store", 
+        type=str, 
+        default="ID",
+        dest="ID_key"
+    )
+
+    parser.add_argument(
         '--ID-filename',
         help="File containing list of object IDs to copy to the new file",
         action="store", 
@@ -100,7 +109,7 @@ if __name__ == '__main__':
         else:
             tmp = ascii.read(args.ID_file_list, Reader=ascii.basic.CommentedHeader)
 
-        ID_to_copy = tmp['ID']
+        ID_to_copy = tmp[args.ID_key]
 
     hdu =  fits.open(args.input)[1]
 
@@ -118,7 +127,7 @@ if __name__ == '__main__':
     #IDs_low_p= (5708, 6714, 22925, 22230, 5642, 33821, 5338, 9177, 24394, 9177, 2611, 511, 76)
     #ID_to_copy = np.array(IDs_low_p+IDs_high_p, dtype=np.int)
 
-    mask = np.zeros(len(hdu.data['ID']), dtype=bool)
+    mask = np.zeros(len(hdu.data[args.ID_key]), dtype=bool)
     if args.n_objects is not None:
         
         if args.n_objects < 1:
@@ -134,7 +143,7 @@ if __name__ == '__main__':
     else:
 
 
-        if isinstance(hdu.data['ID'][0], basestring):
+        if isinstance(hdu.data[args.ID_key][0], basestring):
             for ID in ID_to_copy:
                 #print "ID----> ", ID
                 #indx = np.where(hdu.data['ID'] == ID)[0]
@@ -142,11 +151,10 @@ if __name__ == '__main__':
                 mask[hdu.data['ID'] == ID] = True
         else:
             for i in range(len(ID_to_copy)):
-                i1 = bisect.bisect_left(hdu.data['ID'], ID_to_copy[i])
-                if hdu.data['ID'][i1] == ID_to_copy[i]:
+                i1 = bisect.bisect_left(hdu.data[args.ID_key], ID_to_copy[i])
+                if hdu.data[args.ID_key][i1] == ID_to_copy[i]:
                     mask[i1] = True
 
-    print "ID: ", hdu.data['ID'][mask]
     hdu.data = hdu.data[mask]
 
     hdu.writeto(args.output, clobber=args.clobber)
