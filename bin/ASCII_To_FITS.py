@@ -81,7 +81,10 @@ if __name__ == '__main__':
         for line in f:
             if line.startswith('#'):
                 if 'redshift' in line:
-                    redshift = np.float32(line.split('=')[1])
+                    try:
+                        redshift = np.float32(line.split('=')[1])
+                    except:
+                        pass
             else:
                 break
 
