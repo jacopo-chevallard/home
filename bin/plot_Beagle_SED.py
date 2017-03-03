@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import argparse
 
+c_light = 2.99792e+18 # Ang/s
 
 if __name__ == '__main__':
 
@@ -36,14 +37,27 @@ if __name__ == '__main__':
         default=None
     )
 
-    args = parser.parse_args()    
+    parser.add_argument(
+        '--redshift',
+        dest="redshift", 
+        help="Redshift",
+        type=np.float32,
+        default=None
+        )
 
-    print "---> ", args.xrange
+
+    parser.add_argument(
+        '--fnu',
+        dest="fnu", 
+        help="Plot in units of Fnu instead of Flambda",
+        action="store_true")
+
+    args = parser.parse_args()    
 
     hdulist = fits.open(args.file)
 
     # Get the wavelength array
-    wl = hdulist['full sed wl'].data['wl'][0,:] / 1.E+04
+    wl = hdulist['full sed wl'].data['wl'][0,:]
 
     # Get the SED
     SEDs = hdulist['full sed'].data
@@ -52,6 +66,15 @@ if __name__ == '__main__':
     else:
         sed = SEDs
 
+    # Redshift the SED and wl
+    if args.redshift is not None:
+        sed /= (1.+args.redshift)
+        wl *= (1.+args.redshift)
+
+    # Convert F_lambda [erg s^-1 cm^-2 A^-1] ----> F_nu [erg s^-1 cm^-2 Hz^-1]
+    if args.fnu:
+        sed = wl**2/c_light*sed
+
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
 
@@ -59,9 +82,12 @@ if __name__ == '__main__':
         ax.set_xlim(args.xrange)
 
     ax.set_xlabel('$\lambda / \mu\\textnormal{m}$')
-    ax.set_ylabel('$f_\lambda / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{\AA}^{-1} $')
+    if args.fnu:
+        ax.set_ylabel('$f_\\nu / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{Hz}^{-1} $')
+    else:
+        ax.set_ylabel('$f_\lambda / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{\AA}^{-1} $')
 
-    ax.plot(wl,
+    ax.plot(wl/1.E+04,
        sed,
        lw=1.0,
        color="red"
