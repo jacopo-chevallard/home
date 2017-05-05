@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     # Get the wavelength array
     wl = hdulist['full sed wl'].data['wl'][0,:] / 1.E+04
-    tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.3E')
+    tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
     columns.append(tmpCol)
 
     # Get the SED
@@ -52,12 +52,12 @@ if __name__ == '__main__':
     if args.rows:
         for i, row in enumerate(args.rows):
             sed = SEDs[row,:]
-            tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.3E')
+            tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
             columns.append(tmpCol)
     else:
         for i in range(len(SEDs[:,0])):
             sed = SEDs[i,:]
-            tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.3E')
+            tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
             columns.append(tmpCol)
 
     newTable = Table(columns)
