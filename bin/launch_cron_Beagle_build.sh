@@ -89,11 +89,23 @@ for arg in "${mandatoryArgs[@]}" ; do
   fi
 done
 
+BEAGLE_cron="~/bin/Beagle_cron.sh"
 #write out current crontab
-crontab -l > beagle_cron
+if [ -f ${BEAGLE_cron} ] ; then
+  rm ${BEAGLE_cron}
+fi
+touch ${BEAGLE_cron}
 
-echo "00 02 * * *  bash -lc automatic_Beagle_build.sh  --repository-dir='${repoDir}' --install-dir='${installDir}' --cmake-flags='${cmakeFlags}' > ~/cronlog/\`date +\%Y-\%m-\%d-\%H:\%M:\%S\`-cron.log 2>&1 ; mailx -s \"CronJob-Beagle build run successfully on ${server}\" ${email}" >> beagle_cron
+echo "#!/bin/bash \n" > ${BEAGLE_cron}
+echo log_file=~/cronlog/\`date +\%Y-\%m-\%d-\%H:\%M:\%S\`-cron.log >  ${BEAGLE_cron}
+echo "automatic_Beagle_build.sh  --repository-dir='${repoDir}' --install-dir='${installDir}' --cmake-flags='${cmakeFlags}' > ${log_file} 2>&1" > ${BEAGLE_cron}
+echo "mailx -s \"CronJob-Beagle build run successfully on ${server}\" ${email} < ${log_file}" > ${BEAGLE_cron}
 
-crontab beagle_cron
+#crontab -l > beagle_cron
+#echo "00 02 * * *  bash -lc ${BEAGLE_cron}"
 
-rm beagle_cron
+#echo "00 02 * * *  bash -lc "automatic_Beagle_build.sh  --repository-dir='${repoDir}' --install-dir='${installDir}' --cmake-flags='${cmakeFlags}'" > ~/cronlog/\`date +\%Y-\%m-\%d-\%H:\%M:\%S\`-cron.log 2>&1 ; mailx -s \"CronJob-Beagle build run successfully on ${server}\" ${email}" >> beagle_cron
+
+#crontab beagle_cron
+
+#rm beagle_cron

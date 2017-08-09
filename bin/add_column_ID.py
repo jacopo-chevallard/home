@@ -2,6 +2,7 @@
 
 import argparse
 from astropy.table import Table, Column
+from astropy.io import fits
 import numpy as np
 
 if __name__ == '__main__':
@@ -37,17 +38,35 @@ if __name__ == '__main__':
     # Get parsed arguments
     args = parser.parse_args()    
 
-    t = Table.read(args.input, format='fits')
+    hdulist = fits.open(args.input)
+    n = len(hdulist[1].data.field(0))
 
-    n = len(t)
     indices = np.array(range(n)) + 1
+    ID_col = fits.Column(array=indices, name=args.ID_key, format='I')
 
-    ID_col = Column(indices, name=args.ID_key, dtype='i4')
+    new_hdulist = fits.HDUList([hdulist[0]])
+    cols = None
 
-    t.add_column(ID_col, index=0)
+    for hdu in hdulist:
+
+        if hdu.data is None:
+            continue
+
+        if cols is None and not hdu.is_image:
+            cols = list()
+            cols.append(ID_col)
+            for col in hdu.columns:
+                cols.append(col)
+
+            cols_ = fits.ColDefs(cols)
+            new_hdu = fits.BinTableHDU.from_columns(cols_)
+            new_hdu.name = hdu.name
+            new_hdulist.append(new_hdu)
+        else:
+            new_hdulist.append(hdu)
 
     output = args.input
     if args.output is not None:
         output = args.output
 
-    t.write(output, format='fits', overwrite=True)
+    new_hdulist.writeto(output, clobber=True)

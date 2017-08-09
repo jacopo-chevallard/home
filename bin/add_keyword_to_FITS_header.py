@@ -84,11 +84,11 @@ if __name__ == '__main__':
 
 
         if args.comment is None:
-            for keyword, value in zip(args.keyword, args.value):
-                header[keyword] = value
+            for key, val in zip(args.keyword, value):
+                header[key] = val
         else:
-            for keyword, value, comment in zip(args.keyword, args.value, args.comment):
-                header[keyword] = (value, comment)
+            for key, val, comment in zip(args.keyword, value, args.comment):
+                header[key] = (val, comment)
 
         # Save the new file
         output = args.input

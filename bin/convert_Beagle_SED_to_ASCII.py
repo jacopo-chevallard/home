@@ -28,6 +28,20 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
+        '--marginal-sed',
+        help="Extract the 'marginal SED'",
+        action="store_true",
+        dest="marginal_sed" 
+    )
+
+    parser.add_argument(
+        '--full-sed',
+        help="Extract the 'full SED'",
+        action="store_true",
+        dest="full_sed" 
+    )
+
+    parser.add_argument(
         '--rows',
         help="Row in the FULL SED extension to be plotted",
         dest="rows", 
@@ -42,12 +56,23 @@ if __name__ == '__main__':
     columns = list()
 
     # Get the wavelength array
-    wl = hdulist['full sed wl'].data['wl'][0,:] / 1.E+04
-    tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
-    columns.append(tmpCol)
+    if args.full_sed or 'full sed' in hdulist:
+        wl = hdulist['full sed wl'].data['wl'][0,:] / 1.E+04
+        tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
+        columns.append(tmpCol)
 
-    # Get the SED
-    SEDs = hdulist['full sed'].data
+        # Get the SED
+        SEDs = hdulist['full sed'].data
+
+    elif args.marginal_sed or 'marginal sed' in hdulist:
+        wl = hdulist['marginal sed wl'].data['wl'][0,:] / 1.E+04
+        tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
+        columns.append(tmpCol)
+
+        # Get the SED
+        SEDs = hdulist['marginal sed'].data
+    else:
+        raise ValueError("No SED present in Beagle output file!")
 
     if args.rows:
         for i, row in enumerate(args.rows):
@@ -55,9 +80,14 @@ if __name__ == '__main__':
             tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
             columns.append(tmpCol)
     else:
-        for i in range(len(SEDs[:,0])):
-            sed = SEDs[i,:]
-            tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
+        if len(SEDs.shape) == 2:
+            for i in range(len(SEDs[:,0])):
+                sed = SEDs[i,:]
+                tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
+                columns.append(tmpCol)
+        else:
+            sed = SEDs[:]
+            tmpCol = Column(sed, name='flux_0', dtype=np.float32, format='%.5E')
             columns.append(tmpCol)
 
     newTable = Table(columns)
