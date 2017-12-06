@@ -49,40 +49,91 @@ if __name__ == '__main__':
         nargs='+'
     )
 
+    parser.add_argument(
+        '--wl-units',
+        help="Wavelength units.",
+        action="store",
+        type=str,
+        dest="wl_units",
+        choices=['ang', 'nm', 'micron'],
+        default='micron'
+        )
+
+    parser.add_argument(
+        '--wl-range',
+        help="Wavelength range to plot.",
+        action="store",
+        type=float,
+        nargs=2,
+        dest="wl_range" 
+        )
+
+    parser.add_argument(
+        '--wl-rest',
+        help="Print spectra in rest-frame wavelength",
+        action="store_true", 
+        dest="wl_rest" 
+        )
+
     args = parser.parse_args()    
 
     hdulist = fits.open(args.file)
 
     columns = list()
 
+    wl_factor = 1.
+    if args.wl_units == 'micron':
+        wl_factor = 1.E+04
+    elif args.wl_units == 'nm':
+        wl_factor = 1.E+01
+
+
+    is_marginal = False
     # Get the wavelength array
     if args.full_sed or 'full sed' in hdulist:
-        wl = hdulist['full sed wl'].data['wl'][0,:] / 1.E+04
-        tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
-        columns.append(tmpCol)
+        wl = hdulist['full sed wl'].data['wl'][0,:] / wl_factor
 
         # Get the SED
         SEDs = hdulist['full sed'].data
 
     elif args.marginal_sed or 'marginal sed' in hdulist:
-        wl = hdulist['marginal sed wl'].data['wl'][0,:] / 1.E+04
-        tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
-        columns.append(tmpCol)
+        wl = hdulist['marginal sed wl'].data['wl'][0,:] / wl_factor
 
         # Get the SED
         SEDs = hdulist['marginal sed'].data
+        is_marginal = True
     else:
         raise ValueError("No SED present in Beagle output file!")
 
+    if args.wl_range is not None:
+        loc = np.where((wl >= args.wl_range[0]) & (wl <= args.wl_range[1]))[0]
+
+    if is_marginal and args.wl_rest:
+        if not args.rows:
+            raise ValueError("You can only print rest-frame  'marginal SED' per file!")
+        elif len(args.rows) > 1:
+            raise ValueError("You can only print rest-frame  'marginal SED' per file!")
+
+    wl = wl[loc]
+    if is_marginal and args.wl_rest:
+        row = args.rows[0]
+        redshift = hdulist['galaxy properties'].data['redshift'][row]
+        wl /= (1.+redshift)
+
+    tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
+    columns.append(tmpCol)
+
     if args.rows:
         for i, row in enumerate(args.rows):
-            sed = SEDs[row,:]
+            sed = SEDs[row,loc]
+            if is_marginal and args.wl_rest:
+                sed *= (1.+redshift)
             tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
             columns.append(tmpCol)
     else:
         if len(SEDs.shape) == 2:
             for i in range(len(SEDs[:,0])):
-                sed = SEDs[i,:]
+                sed = SEDs[i,loc]
                 tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
                 columns.append(tmpCol)
         else:

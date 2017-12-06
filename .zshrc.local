@@ -1,5 +1,5 @@
 
-export PATH="$PATH:/usr/local:/usr/local/bin:/opt/local/share/texmf-texlive/dvips/base:/bin:/usr/texbin:/Users/jchevall/bin:/Users/jchevall/bc99lx/bc03/src:/Users/jchevall/bc99lx/Mock:/Users/jchevall/bc99lx/is_97:/Users/jchevall/MILLENNIUM:/Users/jchevall/IDL:/Users/jchevall/idlutils/bin:/Applications/rsi/idl/bin:/Users/jchevall/TeX:/opt/openmpi/bin:opt/local/bin:/Users/jchevall/Bin:/Users/jchevall/profilers/TAU/apple/bin"
+export PATH="$PATH:/usr/local:/usr/local/bin:/opt/local/share/texmf-texlive/dvips/base:/bin:/usr/texbin:/Users/jchevall/bin:/Users/jchevall/bc99lx/bc03/src:/Users/jchevall/bc99lx/Mock:/Users/jchevall/bc99lx/is_97:/Users/jchevall/MILLENNIUM:/Users/jchevall/IDL:/Users/jchevall/idlutils/bin:/Applications/rsi/idl/bin:/Users/jchevall/TeX:/opt/openmpi/bin:opt/local/bin:/Users/jchevall/Bin:/Users/jchevall/profilers/TAU/apple/bin:/Users/jchevall/bin/wcstools-3.9.5"
 
 export PATH="/Users/jchevall/anaconda/bin:/usr/local/bin:/usr/local/Cellar/open-mpi/2.0.1/lib:/usr/local/Cellar/open-mpi/2.0.1/include:$PATH"
 
@@ -11,6 +11,8 @@ alias topcat="java -Xmx1024M -jar /Applications/TOPCAT.app/Contents/Resources/Ja
 
 # Syntax highlighting
 export LSCOLORS="gxfxcxdxfxegedabagacad"
+
+alias lsdir="ls -ltr -d */"
 
 # Sonos
 alias airsonos="n use 0.10.28 /usr/local/bin/airsonos"
@@ -44,7 +46,7 @@ alias gittag="git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags
 
 export PYTHONPATH="/Users/jchevall/python:/Users/jchevall/JWST/code" 
 
-export JWSTPYTOOLS="/Users/jchevall/JWST/code/JWST_Python_tools/JWSTpytools"
+export JWSTPYTOOLS="/Users/jchevall/JWST/code/JWSTpytools-0.0.3"
 
 # This solves some installation issues with Python Anaconda and UTF-8 encoding
 # see http://stackoverflow.com/questions/19961239/pelican-3-3-pelican-quickstart-error-valueerror-unknown-locale-utf-8
@@ -139,6 +141,12 @@ alias	idl="$IDL_DIR/bin/idl"
 
 # UREKA (includes IRAF and toher stuff)
 alias ureka="open ~/Desktop/Ureka_primary.terminal"
+export iraf="~/iraf/iraf/"
+
+# Add iraf setup commands
+if [ -f /Users/jchevall/.iraf/setup.sh ] ; then
+  source /Users/jchevall/.iraf/setup.sh
+fi
 
 alias openprev="open -a preview"
 

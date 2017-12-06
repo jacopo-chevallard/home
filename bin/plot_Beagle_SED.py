@@ -38,6 +38,16 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
+        '--wl-units',
+        help="Wavelength units.",
+        action="store",
+        type=str,
+        dest="wl_units",
+        choices=['ang', 'nm', 'micron'],
+        default='ang'
+        )
+
+    parser.add_argument(
         '--redshift',
         dest="redshift", 
         help="Redshift",
@@ -53,6 +63,12 @@ if __name__ == '__main__':
         action="store_true")
 
     args = parser.parse_args()    
+
+    wl_factor = 1.
+    if args.wl_units == 'micron':
+        wl_factor = 1.E+04
+    elif args.wl_units == 'nm':
+        wl_factor = 1.E+01
 
     hdulist = fits.open(args.file)
 
@@ -87,7 +103,7 @@ if __name__ == '__main__':
     else:
         ax.set_ylabel('$f_\lambda / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{\AA}^{-1} $')
 
-    ax.plot(wl/1.E+04,
+    ax.plot(wl/wl_factor,
        sed,
        lw=1.0,
        color="red"
