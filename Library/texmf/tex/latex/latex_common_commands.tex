@@ -1,0 +1,180 @@
+\usepackage{upgreek}
+\usepackage{tabularx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%      Custom commands      %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\txn}[1]{\textnormal{#1}}
+\newcommand{\range}[3]{\hbox{$#1 \sim #2 \,\txn{--}\, #3$}}
+\newcommand\bb[1]{\mbox{\em #1}}
+
+\newcommand{\citebf}[1]{{\bf \cite{#1}}}
+
+\newcommand{\lam}[1]{\hbox{$\uplambda#1$}}
+\newcommand{\lamlam}[2]{\hbox{$\uplambda\uplambda#1,\!#2$}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Tables    %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\renewcommand{\arraystretch}{1.35}
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%      Colours      %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\red}{\color{red}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%      Generic      %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\SN}{\hbox{$\txn{S}/\txn{N}$}}
+\newcommand{\EW}{\hbox{$\txn{EW}$}}
+\newcommand{\vs}{\textit{vs}}
+\newcommand{\R}{\hbox{$\txn{R}$}}
+
+
+\newcommand{\chitwo}{\hbox{$\chi^2$}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Units          %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Zsun}{\hbox{$\Z_\odot$}}
+\newcommand{\micron}{\hbox{\,$\upmu$m}}
+\newcommand{\yrInv}{\hbox{$\txn{yr}^{-1}$}}
+\newcommand{\MsunyrInv}{\hbox{$\Msun\,\yrInv$}}
+\newcommand{\MpcInv}{\hbox{$\txn{Mpc}^{-1}$}}
+
+\newcommand{\sqarcmin}{\hbox{$\txn{arcmin}^2$}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Observatories          %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Herschel}{\textit{Herschel}}
+\newcommand{\Planck}{\textit{Planck}}
+\newcommand{\JWST}{\textit{JWST}}
+\newcommand{\HST}{\textit{HST}}
+\newcommand{\Chandra}{\textit{Chandra}}
+
+\newcommand{\Euclid}{\textit{Euclid}}
+\newcommand{\Spitzer}{{\it Spitzer}}
+\newcommand{\WFIRST}{\textit{WFIRST}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Codes          %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\beagle}{\hbox{\textsc{beagle}}}
+\newcommand{\ibeagle}{i\textsc{Beagle}}
+\newcommand{\pybeagle}{\textsc{pyp-beagle}}
+\newcommand{\cloudy}{\hbox{\textsc{cloudy}}}
+\newcommand{\websim}{\hbox{\textsc{websim-compass}}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Dust attenuation          %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\taubP}{\hbox{$\tau_{B\perp}$}}
+\newcommand{\tauVbc}{\hbox{$\hat{\tau}_{V,\txn{BC}}$}}
+\newcommand{\Tthin}{\hbox{$\txn{t}_\txn{thin}$}}
+\newcommand{\Tthick}{\hbox{$\txn{t}_\txn{thick}$}}
+\newcommand{\Tbulge}{\hbox{$\txn{t}_\txn{bulge}$}}
+\newcommand{\lgTthin}{\hbox{$\log({\txn{t}_\txn{thin}/\txn{Gyr}})$}}
+\newcommand{\lgTthick}{\hbox{$\log({\txn{t}_\txn{thick}/\txn{Gyr}})$}}
+\newcommand{\lgTbulge}{\hbox{$\log({\txn{t}_\txn{bulge}/\txn{Gyr}})$}}
+\newcommand{\tauVyoung}{\hbox{$\hat{\tau}^\txn{young}_V(\theta)$}}
+\newcommand{\tauVold}{\hbox{$\hat{\tau}^\txn{old}_V(\theta)$}}
+\newcommand{\nVism}{\hbox{$n^\txn{ISM}_V(\theta)$}}
+\newcommand{\tauismTh}{\hbox{$\hat{\tau}^\txn{ISM}(\theta)$}}
+\newcommand{\tauV}{\hbox{$\hat{\tau}_{\scriptscriptstyle V}$}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Physical parameters         %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\Z}{\hbox{$\txn{Z}$}}
+\newcommand{\muS}{\hbox{{\,$\mu_{\ast}$}}}
+\newcommand{\M}{\hbox{$\txn{M}$}}
+\newcommand{\Mhalo}{\hbox{$\txn{M}_\txn{halo}$}}
+\newcommand{\Mstar}{\hbox{$\txn{M}_{\ast}$}}
+\newcommand{\Msun}{\hbox{$\txn{M}_{\odot}$}}
+\newcommand{\Muv}{\hbox{$M_\txn{FUV}$}}
+\newcommand{\MuvLim}{\hbox{$M_\txn{FUV}^\txn{lim}$}}
+\newcommand{\fesc}{\hbox{$f_{\mathrm{esc}}$}}
+\newcommand{\QHII}{\hbox{$Q_{\rm HII}$}}
+\newcommand{\logM}{\hbox{$\log(\M/\Msun)$}}
+\newcommand{\sfrc}{\hbox{${\psi_\txn{c}}$}}
+\newcommand{\Us}{\hbox{$U_{\textsc s}$}}
+\newcommand{\logUs}{\hbox{$\log \Us$}}
+
+\newcommand{\logOH}{\hbox{$12 + \log (\txn{O}/\txn{H})$}}
+\newcommand{\aFe}{\hbox{$[\alpha/\txn{Fe}]$}}
+\newcommand{\CO}{\hbox{$\txn{C}/\txn{O}$}}
+
+\newcommand{\xiion}{\hbox{$\xi_\txn{ion}$}}
+\newcommand{\xiionst}{\hbox{$ \xi_\txn{ion}^\star$}}
+
+\newcommand{\Teff}{\hbox{$T_\txn{eff}$}}
+\newcommand{\logg}{\hbox{$\log g$}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Emission lines          %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\Hd}{\hbox{H$\delta$}}
+\newcommand{\Hg}{\hbox{H$\gamma$}}
+\newcommand{\Ha}{\hbox{H$\alpha$}}
+\newcommand{\HeII}{\hbox{He\,{\sc ii}\lam{1640}}}
+\newcommand{\HeIInoL}{\hbox{He\,{\sc ii}}}
+\newcommand{\OIIIuv}{\mbox{O\,{\sc iii]}\lamlam{1660}{1666}}}
+\newcommand{\SiIII}{\mbox{Si\,{\sc iii]}\lamlam{1883}{1892}}}
+\newcommand{\Hb}{\hbox{H$\beta$}}
+\newcommand{\OII}{\mbox{[O\,{\sc ii]}\lamlam{3726}{3729}}}
+\newcommand{\OIInoL}{\mbox{[O\,{\sc ii]}}}
+\newcommand{\OIIa}{\mbox{[O\,{\sc ii]}\lam{3726}}}
+\newcommand{\OIIb}{\mbox{[O\,{\sc ii]}\lam{3729}}}
+\newcommand{\OIIInoL}{\mbox{[O\,{\sc iii]}}}
+\newcommand{\OIII}{\mbox{[O\,{\sc iii]}\lamlam{4959}{5007}}}
+\newcommand{\OIIIa}{\mbox{[O\,{\sc iii]}\lam{4959}}}
+\newcommand{\OIIIb}{\mbox{[O\,{\sc iii]}\lam{5007}}}
+\newcommand{\OI}{\mbox{[O\,{\sc i]}\lam{6300}}}
+\newcommand{\NII}{\mbox{[N\,{\sc ii]}\lamlam{6548}{6584}}}
+\newcommand{\SII}{\mbox{[S\,{\sc ii]}\lamlam{6716}{6731}}}
+\newcommand{\Lya}{\hbox{Ly$\alpha$}}
+\newcommand{\CIII}{\hbox{[C\,{\sc iii}]\lam1907+C\,{\sc iii}]\lam1909}}
+\newcommand{\CIIInoL}{\hbox{C\,{\sc iii}]}}
+\newcommand{\CIIIa}{\hbox{[C\,{\sc iii}]\lam1907}}
+\newcommand{\CIIIb}{\hbox{C\,{\sc iii}]\lam1909}}
+\newcommand{\CIIItot}{\hbox{C\,{\sc iii}]\lam1908}}
+\newcommand{\CIV}{\mbox{C\,{\sc iv}\lamlam{1548}{1551}}}
+\newcommand{\CIVnoL}{\mbox{C\,{\sc iv}}}
+
+\newcommand{\HaNIISII}{\mbox{$\Ha+\txn{[N\,{\sc ii]}}+\txn{[S\,{\sc ii]}}$}}
+\newcommand{\HbOIII}{\mbox{$\Hb+\txn{[O\,{\sc iii]}}$}}
+
+\newcommand{\HaHb}{\hbox{$\txn{H}\alpha/\txn{H}\beta$}}
+
+\newcommand{\HII}{\mbox{H\,{\sc ii}}}
+\newcommand{\HI}{\mbox{H\,{\sc i}}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Cosmology          %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\LCDM}{\hbox{$\Lambda\txn{CDM}$}}
+\newcommand{\tauE}{\hbox{$\tau_e$}}
+\newcommand{\zeq}{\hbox{$z_\txn{eq}$}}
+\newcommand{\zrec}{\hbox{$z_\txn{rec}$}}
+
