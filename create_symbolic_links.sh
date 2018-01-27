@@ -98,7 +98,7 @@ for file in "${files[@]}"; do
 done
 
 # Check if files exist
-files=( .vimrc .zshrc.local .matplotlib/matplotlibrc .tmux.conf )
+files=( .vimrc .zshrc.local .matplotlib/matplotlibrc .tmux.conf .git-flow-completion.zsh )
 for file in "${files[@]}"; do 
   local_file=~/$file
   new_file=$dir/$file
