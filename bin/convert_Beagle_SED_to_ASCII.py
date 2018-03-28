@@ -4,6 +4,7 @@ from astropy.io import fits
 import os, glob, sys
 import matplotlib.pyplot as plt
 import numpy as np
+from collections import OrderedDict
 import argparse
 from astropy.table import Table, Column
 
@@ -75,6 +76,14 @@ if __name__ == '__main__':
         dest="wl_rest" 
         )
 
+    parser.add_argument(
+        '--print-to-header',
+        help="Physical parameters to be reported in the file header, one per row",
+        dest="header_par", 
+        type=str,
+        nargs='+'
+    )
+
     args = parser.parse_args()    
 
     hdulist = fits.open(args.file)
@@ -86,6 +95,7 @@ if __name__ == '__main__':
         wl_factor = 1.E+04
     elif args.wl_units == 'nm':
         wl_factor = 1.E+01
+
 
 
     is_marginal = False
@@ -107,6 +117,8 @@ if __name__ == '__main__':
 
     if args.wl_range is not None:
         loc = np.where((wl >= args.wl_range[0]) & (wl <= args.wl_range[1]))[0]
+    else:
+        loc = np.arange(len(wl))
 
     if is_marginal and args.wl_rest:
         if not args.rows:
@@ -123,6 +135,9 @@ if __name__ == '__main__':
     tmpCol = Column(wl, name='wl', dtype=np.float32, format='%.5E')
     columns.append(tmpCol)
 
+    if args.header_par is not None:
+        header = OrderedDict()
+
     if args.rows:
         for i, row in enumerate(args.rows):
             sed = SEDs[row,loc]
@@ -130,6 +145,19 @@ if __name__ == '__main__':
                 sed *= (1.+redshift)
             tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
             columns.append(tmpCol)
+
+            if args.header_par is not None:
+                for par in args.header_par:
+                    for hdu in hdulist:
+                        try:
+                            if par in hdu.columns.names:
+                                if par in header:
+                                    header[par] = hdu.data[par][row]
+                                else:
+                                    header[par] = np.zeros(len(args.rows))
+                                    header[par] = hdu.data[par][row]
+                        except:
+                            continue
     else:
         if len(SEDs.shape) == 2:
             for i in range(len(SEDs[:,0])):
@@ -142,6 +170,11 @@ if __name__ == '__main__':
             columns.append(tmpCol)
 
     newTable = Table(columns)
+    if args.header_par is not None:
+        comments = list()
+        for key, value in header.iteritems():
+            comments.append(key + " = " + "{:.4E}".format(value))
+        newTable.meta['comments']  = comments
 
     if args.output:
         file_name = args.output
