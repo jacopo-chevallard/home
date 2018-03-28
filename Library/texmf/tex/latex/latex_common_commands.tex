@@ -1,31 +1,72 @@
 \usepackage{upgreek}
 \usepackage{tabularx}
 
+\LetLtxMacro{\oldtextsc}{\textsc}
+\renewcommand{\textsc}[1]{\oldtextsc{\scalefont{1.2}#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%      Spacing     %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\affilSpace}{-5pt}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%      Custom commands      %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
+\newcommand{\SBID}[1]{\hbox{SB #1}}
+
+
 \newcommand{\txn}[1]{\textnormal{#1}}
 \newcommand{\range}[3]{\hbox{$#1 \sim #2 \,\txn{--}\, #3$}}
 \newcommand\bb[1]{\mbox{\em #1}}
 
+\newcommand{\ave}[1]{\langle #1 \rangle}
+
 \newcommand{\citebf}[1]{{\bf \cite{#1}}}
 
-\newcommand{\lam}[1]{\hbox{$\uplambda#1$}}
-\newcommand{\lamlam}[2]{\hbox{$\uplambda\uplambda#1,\!#2$}}
+\newcommand{\lam}[1]{\hbox{$\,\uplambda#1$}}
+\newcommand{\lamlam}[2]{\hbox{$\,\uplambda\uplambda#1,\!#2$}}
 
+\def\mathbi#1{\textbf{\em #1}}
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+
+\renewcommand{\bmath}[1]{\mbox{ \boldmath $\!#1\!$ \unboldmath}}
+\renewcommand{\mathbfss}[1]{\mathsf{\mathbf{#1}}}
+
+\newcommand{\smallerSub}[1]{{\scriptscriptstyle{#1}}}
+\newcommand{\smallerSubTxn}[1]{\txn{\scriptsize{#1}}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%     Stats %%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\conditional}[2]{\hbox{$\txn{P}(#1 \mid #2)$}}
+
+\newcommand{\thetab}{\hbox{$\bmath{\upTheta}$}}
+\newcommand{\Db}{\hbox{$\bmath{D}$}}
+\newcommand{\prior}{\hbox{$\pi(\thetab)$}}
+\newcommand{\likelihood}{\hbox{$\mathcal{L}(\thetab)$}}
+
+\newcommand{\chitwo}{\hbox{$\chi^2$}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%     Tables    %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
+%  Define new column types that take their width as argument 
+% es \begin{tabular}{| c | L{3cm} | C{3cm} | R{3cm} |}
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
+% Change spacing between table rows
 \renewcommand{\arraystretch}{1.35}
 
+\newcommand{\rowHeight}{0.1\hsize}
+
+\newcommand{\colWidth}{0.35\linewidth}
+\newcommand{\colhspace}{0.02\linewidth}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%      Colours      %%%%%%%
@@ -42,16 +83,16 @@
 \newcommand{\vs}{\textit{vs}}
 \newcommand{\R}{\hbox{$\txn{R}$}}
 
-
-\newcommand{\chitwo}{\hbox{$\chi^2$}}
+\newcommand{\unsim}{\mathord{\sim}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%     Units          %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\Zsun}{\hbox{$\Z_\odot$}}
-\newcommand{\micron}{\hbox{\,$\upmu$m}}
-\newcommand{\yrInv}{\hbox{$\txn{yr}^{-1}$}}
+\renewcommand{\micron}{\hbox{\,$\upmu$m}}
+\newcommand{\yr}{\hbox{$\txn{yr}$}}
+\newcommand{\yrInv}{\hbox{$\yr^{-1}$}}
 \newcommand{\MsunyrInv}{\hbox{$\Msun\,\yrInv$}}
 \newcommand{\MpcInv}{\hbox{$\txn{Mpc}^{-1}$}}
 
@@ -68,7 +109,7 @@
 \newcommand{\Chandra}{\textit{Chandra}}
 
 \newcommand{\Euclid}{\textit{Euclid}}
-\newcommand{\Spitzer}{{\it Spitzer}}
+\newcommand{\Spitzer}{\textit{Spitzer}}
 \newcommand{\WFIRST}{\textit{WFIRST}}
 
 %%%%%%%%%%%%%%%%%%%%%%
@@ -78,53 +119,86 @@
 \newcommand{\beagle}{\hbox{\textsc{beagle}}}
 \newcommand{\ibeagle}{i\textsc{Beagle}}
 \newcommand{\pybeagle}{\textsc{pyp-beagle}}
+\newcommand{\pypbeagle}{\textsc{pyp-beagle}}
 \newcommand{\cloudy}{\hbox{\textsc{cloudy}}}
 \newcommand{\websim}{\hbox{\textsc{websim-compass}}}
+\newcommand{\multinest}{\textsc{multinest}}
+\newcommand{\eazy}{\textsc{eazy}}
+\newcommand{\bpz}{\textsc{bpz}}
+\newcommand{\getdist}{\textsc{getdist}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%     Dust attenuation          %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\taubP}{\hbox{$\tau_{B\perp}$}}
-\newcommand{\tauVbc}{\hbox{$\hat{\tau}_{V,\txn{BC}}$}}
+\newcommand{\taubP}{\hbox{$\uptau_{B\perp}$}}
+\newcommand{\tauVbc}{\hbox{$\hat{\uptau}_{V,\txn{BC}}$}}
 \newcommand{\Tthin}{\hbox{$\txn{t}_\txn{thin}$}}
 \newcommand{\Tthick}{\hbox{$\txn{t}_\txn{thick}$}}
 \newcommand{\Tbulge}{\hbox{$\txn{t}_\txn{bulge}$}}
 \newcommand{\lgTthin}{\hbox{$\log({\txn{t}_\txn{thin}/\txn{Gyr}})$}}
 \newcommand{\lgTthick}{\hbox{$\log({\txn{t}_\txn{thick}/\txn{Gyr}})$}}
 \newcommand{\lgTbulge}{\hbox{$\log({\txn{t}_\txn{bulge}/\txn{Gyr}})$}}
-\newcommand{\tauVyoung}{\hbox{$\hat{\tau}^\txn{young}_V(\theta)$}}
-\newcommand{\tauVold}{\hbox{$\hat{\tau}^\txn{old}_V(\theta)$}}
+\newcommand{\tauVyoung}{\hbox{$\hat{\uptau}^\txn{young}_V(\theta)$}}
+\newcommand{\tauVold}{\hbox{$\hat{\uptau}^\txn{old}_V(\theta)$}}
 \newcommand{\nVism}{\hbox{$n^\txn{ISM}_V(\theta)$}}
-\newcommand{\tauismTh}{\hbox{$\hat{\tau}^\txn{ISM}(\theta)$}}
-\newcommand{\tauV}{\hbox{$\hat{\tau}_{\scriptscriptstyle V}$}}
+\newcommand{\tauismTh}{\hbox{$\hat{\uptau}^\txn{ISM}(\theta)$}}
+\newcommand{\tauV}{\hbox{$\hat{\tau}_\smallerSub{V}$}}
+
+\newcommand{\Auv}{\hbox{$\txn{A}_\smallerSubTxn{UV}$}}
+\newcommand{\AHa}{\hbox{$\txn{A}_\smallerSubTxn{H\,\upalpha}$}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%     Physical parameters         %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
 
+\renewcommand{\t}{\hbox{$t$}}
+\newcommand{\tburst}{\hbox{$\t_\txn{burst}$}}
+\newcommand{\logt}{\hbox{$\log{(\t/\yr)}$}}
+\newcommand{\tformm}{\hbox{$\t_{\scriptscriptstyle \txn{form}}^{\scriptscriptstyle \txn{max}}$}}
+\newcommand{\logtburst}{\hbox{$\log{(\tburst/\txn{yr})}$}}
+
+\newcommand{\tprime}{\hbox{$\t^{\prime}$}}
+
 \newcommand{\Z}{\hbox{$\txn{Z}$}}
+\newcommand{\logZ}{\hbox{$\log(\Z/\Zsun)$}}
 \newcommand{\muS}{\hbox{{\,$\mu_{\ast}$}}}
 \newcommand{\M}{\hbox{$\txn{M}$}}
+\newcommand{\logM}{\hbox{$\log(\M/\Msun)$}}
 \newcommand{\Mhalo}{\hbox{$\txn{M}_\txn{halo}$}}
 \newcommand{\Mstar}{\hbox{$\txn{M}_{\ast}$}}
 \newcommand{\Msun}{\hbox{$\txn{M}_{\odot}$}}
-\newcommand{\Muv}{\hbox{$M_\txn{FUV}$}}
+
+\newcommand{\Muv}{\hbox{$M_\smallerSubTxn{UV}$}}
 \newcommand{\MuvLim}{\hbox{$M_\txn{FUV}^\txn{lim}$}}
+
+\newcommand{\Luv}{\hbox{$L_\smallerSubTxn{UV}$}}
+\newcommand{\LuvHII}{\hbox{$L_\smallerSubTxn{UV}^\smallerSubTxn{H\,\textsc{ii}}$}}
+\newcommand{\Luvst}{\hbox{$L_\smallerSubTxn{UV}^\star$}}
+
 \newcommand{\fesc}{\hbox{$f_{\mathrm{esc}}$}}
 \newcommand{\QHII}{\hbox{$Q_{\rm HII}$}}
-\newcommand{\logM}{\hbox{$\log(\M/\Msun)$}}
+\newcommand{\sfr}{\hbox{${\psi}$}}
+\newcommand{\logsfr}{\hbox{$\log{(\psi/\MsunyrInv)}$}}
 \newcommand{\sfrc}{\hbox{${\psi_\txn{c}}$}}
-\newcommand{\Us}{\hbox{$U_{\textsc s}$}}
+\newcommand{\Us}{\hbox{$U_\smallerSubTxn{S}$}}
 \newcommand{\logUs}{\hbox{$\log \Us$}}
+\newcommand{\xid}{\hbox{$\upxi_\txn{d}$}}
+\newcommand{\Zism}{\hbox{$\Z_\smallerSubTxn{ISM}$}}
+\newcommand{\logZism}{\hbox{$\log{\Z_\smallerSubTxn{ISM}/\Zsun}$}}
+
+\newcommand{\Te}{\hbox{$T_e$}}
 
 \newcommand{\logOH}{\hbox{$12 + \log (\txn{O}/\txn{H})$}}
-\newcommand{\aFe}{\hbox{$[\alpha/\txn{Fe}]$}}
+\newcommand{\aFe}{\hbox{$[\upalpha/\txn{Fe}]$}}
 \newcommand{\CO}{\hbox{$\txn{C}/\txn{O}$}}
 
-\newcommand{\xiion}{\hbox{$\xi_\txn{ion}$}}
-\newcommand{\xiionst}{\hbox{$ \xi_\txn{ion}^\star$}}
+\newcommand{\Nion}{\hbox{$\dot{N}_\txn{ion}$}}
+
+\newcommand{\xiion}{\hbox{$\upxi_\txn{ion}$}}
+\newcommand{\xiionHII}{\hbox{$ \upxi_\txn{ion}^\smallerSubTxn{H\,\textsc{ii}}$}}
+\newcommand{\xiionst}{\hbox{$ \upxi_\txn{ion}^\star$}}
 
 \newcommand{\Teff}{\hbox{$T_\txn{eff}$}}
 \newcommand{\logg}{\hbox{$\log g$}}
@@ -133,14 +207,27 @@
 %%     Emission lines          %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\Hd}{\hbox{H$\delta$}}
-\newcommand{\Hg}{\hbox{H$\gamma$}}
-\newcommand{\Ha}{\hbox{H$\alpha$}}
+\newcommand{\Hz}{\hbox{H$\upzeta$}}
+\newcommand{\He}{\hbox{H$\upepsilon$}}
+\newcommand{\Hd}{\hbox{H$\updelta$}}
+\newcommand{\Hg}{\hbox{H$\upgamma$}}
+\newcommand{\Hb}{\hbox{H$\upbeta$}}
+\newcommand{\Ha}{\hbox{H$\upalpha$}}
+
+\newcommand{\HeILam}[1]{\hbox{He\,{\sc i}\lam{#1}}}
+\newcommand{\HeI}{\hbox{He\,{\sc i}\lam{5875}}}
 \newcommand{\HeII}{\hbox{He\,{\sc ii}\lam{1640}}}
 \newcommand{\HeIInoL}{\hbox{He\,{\sc ii}}}
-\newcommand{\OIIIuv}{\mbox{O\,{\sc iii]}\lamlam{1660}{1666}}}
+\newcommand{\HeIIopt}{\hbox{He\,{\sc ii}\lam{4686}}}
+
 \newcommand{\SiIII}{\mbox{Si\,{\sc iii]}\lamlam{1883}{1892}}}
-\newcommand{\Hb}{\hbox{H$\beta$}}
+\newcommand{\NeIII}{\hbox{[Ne\,{\sc iii}]\lam{3868}}}
+
+\newcommand{\ArIII}{\hbox{[Ar\,{\sc iii}]\lam{7135}}}
+\newcommand{\ArIV}{\hbox{[Ar\,{\sc iv}]\lam{4740}}}
+
+\newcommand{\OIIIuv}{\mbox{O\,{\sc iii]}\lamlam{1660}{1666}}}
+\newcommand{\OI}{\mbox{[O\,{\sc i]}\lam{6363}}}
 \newcommand{\OII}{\mbox{[O\,{\sc ii]}\lamlam{3726}{3729}}}
 \newcommand{\OIInoL}{\mbox{[O\,{\sc ii]}}}
 \newcommand{\OIIa}{\mbox{[O\,{\sc ii]}\lam{3726}}}
@@ -149,10 +236,21 @@
 \newcommand{\OIII}{\mbox{[O\,{\sc iii]}\lamlam{4959}{5007}}}
 \newcommand{\OIIIa}{\mbox{[O\,{\sc iii]}\lam{4959}}}
 \newcommand{\OIIIb}{\mbox{[O\,{\sc iii]}\lam{5007}}}
-\newcommand{\OI}{\mbox{[O\,{\sc i]}\lam{6300}}}
+\newcommand{\OIIIc}{\mbox{[O\,{\sc iii]}\lam{4363}}}
+%\newcommand{\OI}{\mbox{[O\,{\sc i]}\lam{6300}}}
+
 \newcommand{\NII}{\mbox{[N\,{\sc ii]}\lamlam{6548}{6584}}}
+\newcommand{\NIInoL}{\mbox{[N\,{\sc ii]}}}
+\newcommand{\NIIa}{\mbox{[N\,{\sc ii]}\lam{6548}}}
+\newcommand{\NIIb}{\mbox{[N\,{\sc ii]}\lam{6584}}}
+
 \newcommand{\SII}{\mbox{[S\,{\sc ii]}\lamlam{6716}{6731}}}
+\newcommand{\SIInoL}{\mbox{[S\,{\sc ii]}}}
+\newcommand{\SIIa}{\mbox{[S\,{\sc ii]}\lam{6716}}}
+\newcommand{\SIIb}{\mbox{[S\,{\sc ii]}\lam{6731}}}
+
 \newcommand{\Lya}{\hbox{Ly$\alpha$}}
+
 \newcommand{\CIII}{\hbox{[C\,{\sc iii}]\lam1907+C\,{\sc iii}]\lam1909}}
 \newcommand{\CIIInoL}{\hbox{C\,{\sc iii}]}}
 \newcommand{\CIIIa}{\hbox{[C\,{\sc iii}]\lam1907}}
@@ -173,8 +271,8 @@
 %%     Cosmology          %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\LCDM}{\hbox{$\Lambda\txn{CDM}$}}
-\newcommand{\tauE}{\hbox{$\tau_e$}}
+\newcommand{\LCDM}{\hbox{$\upLambda\txn{CDM}$}}
+\newcommand{\tauE}{\hbox{$\uptau_e$}}
 \newcommand{\zeq}{\hbox{$z_\txn{eq}$}}
 \newcommand{\zrec}{\hbox{$z_\txn{rec}$}}
 
