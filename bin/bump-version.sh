@@ -75,14 +75,33 @@ if [[ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ]]; then
   exit 1;
 fi
 
-if [ ! -f VERSION ]; then
-  echo -ne "${WARNING_FLAG} No ${WHITE}VERSION${YELLOW} file found in the current directory !";
-  exit 1;
+VERSION_FILE="VERSION"
+has_VERSION=true
+if [ ! -f ${VERSION_FILE} ]; then
+  has_VERSION=false
+    echo -ne "${WARNING_FLAG} No ${WHITE}${VERSION_FILE}${YELLOW} or ${WHITE}${PY_VERSION_FILE}${YELLOW} file found in the current directory !";
+    exit 1;
 fi
 
-BASE_STRING=`tail -n 1 VERSION | awk -F= '{print $2}'`
-BASE_STRING=`echo "${BASE_STRING//\'}"`
+n_lines=`wc -l < ${VERSION_FILE}`
+if [ ${n_lines} -eq 1 ] ; then
+  PWD_STRING=(`pwd | tr '/' ' '`)
+  PY_VERSION_FILE="${PWD_STRING[@]:(-1)}/_version.py"
+  has_py_version=true
+fi
+
+BASE_STRING=`tail -n 1 ${VERSION_FILE} | awk -F= '{print $2}'`
+if [ "$has_py_version" = true ] ; then
+  BASE_STRING=`echo "${BASE_STRING//\"}"`
+else
+  BASE_STRING=`echo "${BASE_STRING//\'}"`
+fi
+
+# Remove leading/trailing spaces (see https://stackoverflow.com/a/40962059)
+BASE_STRING=`echo ${BASE_STRING} | xargs echo -n`
+
 BASE_LIST=(`echo $BASE_STRING | tr '.' ' '`)
+
 V_MAJOR=${BASE_LIST[0]}
 V_MINOR=${BASE_LIST[1]}
 V_PATCH=${BASE_LIST[2]}
@@ -104,8 +123,15 @@ if [ -n "$NEEDS_TAG" ]; then
     exit 0
 fi
 echo -e "${NOTICE_FLAG} Will set new version to be ${WHITE}$INPUT_STRING"
-echo "character(len=:),allocatable :: GITFLOW_VERSION" > VERSION
-echo "GITFLOW_VERSION='$INPUT_STRING'" >> VERSION
+
+
+if [ "$has_py_version" = true ] ; then
+  echo __version__ = \"${INPUT_STRING}\" > ${VERSION_FILE}
+else
+  echo "character(len=:),allocatable :: GITFLOW_VERSION" > ${VERSION_FILE}
+  echo "GITFLOW_VERSION='$INPUT_STRING'" >> ${VERSION_FILE}
+fi
+
 echo "## $INPUT_STRING ($NOW)" > tmpfile
 git log --pretty=format:"  - %s" "$BASE_STRING"...HEAD >> tmpfile
 echo "" >> tmpfile
@@ -115,8 +141,14 @@ mv tmpfile CHANGELOG.md
 echo -e "$ADJUSTMENTS_MSG"
 read
 echo -e "$PUSHING_MSG"
-git add CHANGELOG.md git-flow-version
-git commit -m "Version bump ${INPUT_STRING}."
+
+if [ "$has_py_version" = true ] ; then
+  git add CHANGELOG.md ${PY_VERSION_FILE}
+else
+  git add CHANGELOG.md git-flow-version
+fi
+
+git commit -m "Version bump ${INPUT_STRING}"
 tag "${INPUT_STRING}" "${RELEASE_NOTE}"
 git push origin develop
 git checkout master
