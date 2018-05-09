@@ -127,11 +127,12 @@ if __name__ == '__main__':
     #IDs_low_p= (5708, 6714, 22925, 22230, 5642, 33821, 5338, 9177, 24394, 9177, 2611, 511, 76)
     #ID_to_copy = np.array(IDs_low_p+IDs_high_p, dtype=np.int)
 
-    mask = np.zeros(len(hdu.data[args.ID_key]), dtype=bool)
+    n_rows = len(hdu.data[args.ID_key])
+    mask = np.zeros(n_rows, dtype=bool)
     if args.n_objects is not None:
         
         if args.n_objects < 1:
-            n_objects = ceil(args.n_objects*len(mask))
+            n_objects = ceil(args.n_objects*n_rows)
         else:
             n_objects = int(args.n_objects)
 
@@ -152,10 +153,16 @@ if __name__ == '__main__':
         else:
             for i in range(len(ID_to_copy)):
                 i1 = bisect.bisect_left(hdu.data[args.ID_key], ID_to_copy[i])
+                # You may have (numeric) IDs in the input list which go beyond
+                # the available IDs in the orginal catalogue, in which case 
+                # the bisection will give an index equal to the length of the
+                # array
+                if (i1 >= n_rows):
+                    continue
                 if hdu.data[args.ID_key][i1] == ID_to_copy[i]:
                     mask[i1] = True
 
     hdu.data = hdu.data[mask]
 
-    hdu.writeto(args.output, clobber=args.clobber)
+    hdu.writeto(args.output, overwrite=args.clobber)
 
