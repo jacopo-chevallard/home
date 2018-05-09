@@ -38,6 +38,14 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
+        '--position', 
+        help="Position at which the HDU will be inserted (0 = beginning, -1 = end)",
+        type=int, 
+        dest="position", 
+        default=-1
+    )
+
+    parser.add_argument(
         '--output', '-o',
         help="Output file name",
         type=str, 
@@ -48,17 +56,21 @@ if __name__ == '__main__':
 
     hdulist = fits.open(args.input_file)
 
-    new_hdulist = fits.HDUList()
-
-    for hdu in hdulist:
-        new_hdulist.append(hdu)
-
     hdu_from = fits.open(args.from_file)
     write_file = False
     for name in args.hdus:
         if name not in hdulist:
-            new_hdulist.append(hdu_from[name])
+            new_hdu = hdu_from[name]
             write_file = True
+
+    new_hdulist = fits.HDUList()
+    for i, hdu in enumerate(hdulist):
+        if args.position == i:
+            new_hdulist.append(new_hdu)
+        new_hdulist.append(hdu)
+
+    if args.position == -1:
+        new_hdulist.append(new_hdu)
 
     file_name = args.input_file
     if args.output:
@@ -66,4 +78,4 @@ if __name__ == '__main__':
         write_file = True
 
     if write_file: 
-        new_hdulist.writeto(file_name, clobber=True)
+        new_hdulist.writeto(file_name, overwrite=True)
