@@ -149,15 +149,14 @@ if __name__ == '__main__':
             if args.header_par is not None:
                 for par in args.header_par:
                     for hdu in hdulist:
-                        try:
-                            if par in hdu.columns.names:
-                                if par in header:
-                                    header[par] = hdu.data[par][row]
-                                else:
-                                    header[par] = np.zeros(len(args.rows))
-                                    header[par] = hdu.data[par][row]
-                        except:
+                        if hdu.is_image:
                             continue
+                        if par in hdu.columns.names:
+                            if par in header:
+                                header[par] = hdu.data[par][row]
+                            else:
+                                header[par] = np.zeros(len(args.rows))
+                                header[par] = hdu.data[par][row]
     else:
         if len(SEDs.shape) == 2:
             for i in range(len(SEDs[:,0])):
@@ -181,7 +180,7 @@ if __name__ == '__main__':
     else:
         file_name =  os.path.splitext(args.file)[0] + '.txt'
 
-    newTable.write(file_name, format="ascii.commented_header")
+    newTable.write(file_name, format="ascii.commented_header", overwrite=True)
 
     hdulist.close()
 
