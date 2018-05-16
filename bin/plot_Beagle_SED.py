@@ -5,6 +5,7 @@ import os, glob, sys
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
+from autoscale import autoscale_y
 
 c_light = 2.99792e+18 # Ang/s
 
@@ -55,12 +56,21 @@ if __name__ == '__main__':
         default=None
         )
 
-
     parser.add_argument(
         '--fnu',
         dest="fnu", 
         help="Plot in units of Fnu instead of Flambda",
         action="store_true")
+
+    parser.add_argument(
+        '--hdu-name',
+        dest="hdu_name", 
+        help="Name of the HDU containing the SED to be plotted (it must be a 2D image)",
+        type=str,
+        default="full sed"
+        )
+        
+
 
     args = parser.parse_args()    
 
@@ -73,10 +83,12 @@ if __name__ == '__main__':
     hdulist = fits.open(args.file)
 
     # Get the wavelength array
-    wl = hdulist['full sed wl'].data['wl'][0,:]
+    hdu_name = args.hdu_name + " wl"
+    wl = hdulist[hdu_name].data['wl'][0,:]
 
     # Get the SED
-    SEDs = hdulist['full sed'].data
+    hdu_name = args.hdu_name
+    SEDs = hdulist[hdu_name].data
     if len(SEDs.shape) == 2 :
         sed = SEDs[args.row,:]
     else:
@@ -108,6 +120,8 @@ if __name__ == '__main__':
        lw=1.0,
        color="red"
         )
+
+    autoscale_y(ax)
 
     plt.show()
     hdulist.close()
