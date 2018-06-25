@@ -69,4 +69,4 @@ if __name__ == '__main__':
     if args.output is not None:
         output = args.output
 
-    new_hdulist.writeto(output, clobber=True)
+    new_hdulist.writeto(output, overwrite=True)

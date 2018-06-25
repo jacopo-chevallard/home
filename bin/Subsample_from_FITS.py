@@ -75,7 +75,7 @@ if __name__ == '__main__':
         help="Force overwriting of an already existing file.",
         action="store_true", 
         default = False,
-        dest="clobber"
+        dest="overwrite"
     )
 
     parser.add_argument(
@@ -164,5 +164,5 @@ if __name__ == '__main__':
 
     hdu.data = hdu.data[mask]
 
-    hdu.writeto(args.output, overwrite=args.clobber)
+    hdu.writeto(args.output, overwrite=args.overwrite)
 

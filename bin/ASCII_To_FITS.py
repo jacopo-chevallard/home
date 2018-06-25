@@ -91,4 +91,4 @@ if __name__ == '__main__':
     if redshift is not None:
         hdu.header['redshift'] = redshift
 
-    hdu.writeto(output, clobber=True)
+    hdu.writeto(output, overwrite=True)
