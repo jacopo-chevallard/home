@@ -80,19 +80,16 @@ if __name__ == '__main__':
         except:
             hdu = args.hdu
 
-        header = hdulist[hdu].header
-
-
         if args.comment is None:
             for key, val in zip(args.keyword, value):
-                header[key] = val
+                hdulist[hdu].header[key] = val
         else:
             for key, val, comment in zip(args.keyword, value, args.comment):
-                header[key] = (val, comment)
+                hdulist[hdu].header[key] = (val, comment)
 
         # Save the new file
         output = args.input
         if args.output is not None:
             output = args.output
 
-        hdulist.writeto(output, clobber=True)
+        hdulist.writeto(output, overwrite=True)
