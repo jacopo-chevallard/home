@@ -77,58 +77,59 @@ def downgrade_Beagle_spectrum(wl, flux, sigma, bin_width):
 
 if __name__ == '__main__':
 
-    file_name = "/Users/jchevall/Coding/BEAGLE/files/tests/bc2003_hrs_miles_m52n_kroup_ssp_SHORT.sed"
-    file_name = "/Users/jchevall/Coding/BEAGLE/files/tests/bc2003_hrs_miles_m52n_kroup_ssp.sed"
+    if 1 == 0:
+        file_name = "/Users/jchevall/Coding/BEAGLE/files/tests/bc2003_hrs_miles_m52n_kroup_ssp_SHORT.sed"
+        file_name = "/Users/jchevall/Coding/BEAGLE/files/tests/bc2003_hrs_miles_m52n_kroup_ssp.sed"
 
-    data = ascii.read(file_name, Reader=ascii.basic.CommentedHeader, header_start=-1)
+        data = ascii.read(file_name, Reader=ascii.basic.CommentedHeader, header_start=-1)
 
-    wl = data['wl']
+        wl = data['wl']
 
-    ok = np.where((wl >= 3500) & (wl <= 4500))[0]
+        ok = np.where((wl >= 3500) & (wl <= 4500))[0]
 
-    wl = data['wl'][ok]
-    flux = data['flux'][ok]
+        wl = data['wl'][ok]
+        flux = data['flux'][ok]
 
 
-    print "data: ", data
+        print "data: ", data
 
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1)
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
 
-    ax.plot(wl,
-       flux,
-       lw=1.0,
-       color="red"
-        )
+        ax.plot(wl,
+           flux,
+           lw=1.0,
+           color="red"
+            )
 
-    wl0 = wl[0] ; wl1 = wl[-1]
-    bin_width = 5.0
-    rebinned_wl = np.arange(wl0, wl1, bin_width)   
+        wl0 = wl[0] ; wl1 = wl[-1]
+        bin_width = 5.0
+        rebinned_wl = np.arange(wl0, wl1, bin_width)   
 
-    smoothed = smoothspec(wl, flux, outwave=rebinned_wl, smoothtype="lambda", resolution=5., inres=2.5/2.355)
+        smoothed = smoothspec(wl, flux, outwave=rebinned_wl, smoothtype="lambda", resolution=5., inres=2.5/2.355)
 
-    ax.plot(rebinned_wl,
-       smoothed,
-       lw=1.0,
-       color="green"
-        )
+        ax.plot(rebinned_wl,
+           smoothed,
+           lw=1.0,
+           color="green"
+            )
 
-    smoothed, out_wl = downgrade_Beagle_spectrum(wl, flux, sigma=5.0, bin_width=0.5)
+        smoothed, out_wl = downgrade_Beagle_spectrum(wl, flux, sigma=5.0, bin_width=0.5)
 
-    ax.plot(out_wl,
-       smoothed,
-       lw=1.0,
-       color="orange"
-        )
+        ax.plot(out_wl,
+           smoothed,
+           lw=1.0,
+           color="orange"
+            )
 
-    #rebinned_spec = rebin_spec(wl, flux, rebinned_wl)
+        #rebinned_spec = rebin_spec(wl, flux, rebinned_wl)
 
-    #ax.plot(rebinned_wl,
-    #   rebinned_spec,
-    #   lw=1.0,
-    #   color="blue"
-    #    )
+        #ax.plot(rebinned_wl,
+        #   rebinned_spec,
+        #   lw=1.0,
+        #   color="blue"
+        #    )
 
-    plt.show()
+        plt.show()
 
 
