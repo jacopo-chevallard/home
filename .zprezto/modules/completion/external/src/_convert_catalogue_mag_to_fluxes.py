@@ -1,0 +1,1 @@
+/Users/jchevall/Coding/home/bin/zsh_autocompletion/_convert_catalogue_mag_to_fluxes.py
