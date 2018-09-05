@@ -47,10 +47,12 @@ ADJUSTMENTS_MSG="${QUESTION_FLAG} ${CYAN}Now you can make adjustments to ${WHITE
 PUSHING_MSG="${NOTICE_FLAG} Pushing new version to the ${WHITE}origin${CYAN}..."
 
 RELEASE_NOTE=""
+is_minor=false
 
 while true; do
   case "$1" in
     -m | --message ) RELEASE_NOTE=$2; shift; shift ;;
+    --minor ) is_minor=true; shift ;;
     * ) break ;;
   esac
 done
@@ -70,10 +72,11 @@ function tag {
 # Check if the current branch is master, otherwise exit
 CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 DEFAULT_BRANCH="develop"
-if [[ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ]]; then
+if [ "$CURRENT_BRANCH" != "$DEFAULT_BRANCH" ] && [ "$is_minor" != true ]; then
   echo -ne "${WARNING_FLAG} You must be in the ${WHITE}${DEFAULT_BRANCH}${YELLOW} branch to call the script !";
   exit 1;
 fi
+
 
 VERSION_FILE="VERSION"
 has_VERSION=true
@@ -107,8 +110,15 @@ V_MINOR=${BASE_LIST[1]}
 V_PATCH=${BASE_LIST[2]}
 echo -e "${NOTICE_FLAG} Current version: ${WHITE}$BASE_STRING"
 echo -e "${NOTICE_FLAG} Latest commit hash: ${WHITE}$LATEST_HASH"
-V_PATCH=$((V_PATCH + 1))
+
+if [ "$is_minor" = true ] ; then
+  V_MINOR=$((V_MINOR + 1))
+  V_PATCH=0
+else
+  V_PATCH=$((V_PATCH + 1))
+fi
 SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
+
 echo -ne "${QUESTION_FLAG} ${CYAN}Enter a version number [${WHITE}$SUGGESTED_VERSION${CYAN}]: "
 read INPUT_STRING
 if [ "$INPUT_STRING" = "" ]; then
@@ -124,13 +134,13 @@ if [ -n "$NEEDS_TAG" ]; then
 fi
 echo -e "${NOTICE_FLAG} Will set new version to be ${WHITE}$INPUT_STRING"
 
-
 if [ "$has_py_version" = true ] ; then
   echo __version__ = \"${INPUT_STRING}\" > ${VERSION_FILE}
 else
   echo "character(len=:),allocatable :: GITFLOW_VERSION" > ${VERSION_FILE}
   echo "GITFLOW_VERSION='$INPUT_STRING'" >> ${VERSION_FILE}
 fi
+
 
 echo "## $INPUT_STRING ($NOW)" > tmpfile
 git log --pretty=format:"  - %s" "$BASE_STRING"...HEAD >> tmpfile
@@ -149,13 +159,25 @@ else
 fi
 
 git commit -m "Version bump ${INPUT_STRING}"
-tag "${INPUT_STRING}" "${RELEASE_NOTE}"
-git push origin develop
-git checkout master
-git rebase develop
-git push origin master
-git push origin --tags
-git checkout develop
+
+if [ "$is_minor" = true ] ; then
+  git checkout master
+  git merge --no-ff $CURRENT_BRANCH
+  tag "${INPUT_STRING}" "${RELEASE_NOTE}"
+  git push origin master
+  git checkout develop
+  git rebase master
+  git push origin develop
+  git push origin --tags
+else
+  tag "${INPUT_STRING}" "${RELEASE_NOTE}"
+  git push origin develop
+  git checkout master
+  git rebase develop
+  git push origin master
+  git push origin --tags
+  git checkout develop
+fi
 
 CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
 echo -e "${NOTICE_FLAG} Finished. You're now in the ${WHITE}${CURRENT_BRANCH}${CYAN} branch."
