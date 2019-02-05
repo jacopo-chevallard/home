@@ -1,6 +1,7 @@
 #!/bin/bash
 
 display_usage() { 
+  echo -e 'Help not implemented'
 	} 
 
 # if less than one argument supplied, display usage and exit 
