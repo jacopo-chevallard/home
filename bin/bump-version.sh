@@ -158,6 +158,11 @@ else
   git add CHANGELOG.md git-flow-version
 fi
 
+if [ -d "changelog" ]; then
+  scripts/create_netlify_changelog.py -i CHANGELOG.md --folder changelog
+  git add $(git ls-files -o --exclude-standard changelog)
+fi
+
 git commit -m "Version bump ${INPUT_STRING}"
 
 if [ "$is_minor" = true ] ; then
