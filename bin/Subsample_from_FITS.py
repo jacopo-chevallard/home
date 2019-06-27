@@ -201,7 +201,7 @@ if __name__ == '__main__':
 
     if args.n_objects is not None:
         if args.n_objects < 1:
-            n_objects = ceil(args.n_objects*n_rows)
+            n_objects = int(ceil(args.n_objects*n_rows))
         else:
             n_objects = int(args.n_objects)
         mask[0:n_objects] = True
