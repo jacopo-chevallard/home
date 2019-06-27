@@ -1,7 +1,5 @@
 {
 
-    "templates_list" : "bc2003_hr_xmiless_chab_ssp.list",
-
     "parameters" : ["age", "metallicity"],
 
     "header" : 

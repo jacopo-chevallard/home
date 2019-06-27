@@ -19,23 +19,16 @@ _ADDITIONAL_Q_KEY = "additional quantities"
 _HEADER_KEY = "header"
 
 # Name of the HDU extension containing the value of the template parameters
-_HDU_PARAMETERS_NAME = "PARAMETERS GRID"
+_HDU_PARAMETERS_NAME = "PARAMETERS"
 
 # Name of the HDU extension containing the template spectra and additional quantities
-_HDU_GRID_NAME = "SPECTRUM GRID"
+_HDU_CONTINUUM_NAME = "CONTINUUM"
+
+_TEMPLATES_LIST_KEY = "templates_list"
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        '-i', '--input',
-        help="ASCII file containing the list of *ised_ASCII files that will be converted into FITS format",
-        action="store", 
-        type=str, 
-        dest="input_file", 
-        required=True
-    )
 
     parser.add_argument(
         '--JSON-file',
@@ -56,11 +49,13 @@ if __name__ == '__main__':
     # Get parsed arguments
     args = parser.parse_args()    
 
-    # File containing the list of files that will be integrated into a single FITS table
-    mixtures = ascii.read(args.input_file, format="commented_header")
-
     with open(args.json_file) as f:
         json_data = json.load(f, object_pairs_hook=OrderedDict)
+
+    input_file_list = json_data[_TEMPLATES_LIST_KEY]
+
+    # File containing the list of files that will be integrated into a single FITS table
+    mixtures = ascii.read(input_file_list, format="commented_header")
 
     # Parameters defining the grid over which the template spectra are computed
     grid_params = json_data[_GRID_PARAM_KEY]
@@ -87,7 +82,7 @@ if __name__ == '__main__':
     # Cycle across all input files
     for m in mixtures:
 
-        file_name = m["file_name"]
+        file_name = os.path.expandvars(m["file_name"])
         with open(file_name, 'r') as f:
 
             # Read time steps
@@ -141,7 +136,7 @@ if __name__ == '__main__':
             # Add the "additional quantities"
             if additional_quantities is not None:
                 for add in additional_quantities:
-                    file_ = os.path.splitext(file_name)[0]+ "." + add["suffix"]
+                    file_ = os.path.expandvars(os.path.splitext(file_name)[0]+ "." + add["suffix"])
                     n_lines = sum(1 for line in open(file_))
                     header_start = n_lines - n_age
                     data_ = ascii.read(file_, format="commented_header", header_start=header_start)
@@ -233,7 +228,7 @@ if __name__ == '__main__':
         nrows = len(grid["age"])/n_metal
 
         new_hdu = fits.BinTableHDU.from_columns(_cols, nrows=nrows)
-        new_hdu.name = _HDU_GRID_NAME
+        new_hdu.name = _HDU_CONTINUUM_NAME
 
         # Fill the hdu!
         j = 0
@@ -255,9 +250,9 @@ if __name__ == '__main__':
 
         # Finally, write the file to the disk!
         if args.split_files:
-            file_name = os.path.splitext(args.input_file)[0] + "_Z_" + str(metallicity) + ".fits"
+            file_name = os.path.splitext(input_file_list)[0] + "_Z_" + str(metallicity) + ".fits"
         else:
-            file_name = os.path.splitext(args.input_file)[0]+ ".fits"
+            file_name = os.path.splitext(input_file_list)[0]+ ".fits"
 
         hdulist.writeto(file_name, overwrite=True)
 
