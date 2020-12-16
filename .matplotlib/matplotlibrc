@@ -35,8 +35,9 @@
 # You can also deploy your own backend outside of matplotlib by
 # referring to the module name (which must be in the PYTHONPATH) as
 # 'module://my_backend'.
-#backend      : Agg
+# For interactive plots on Mac OS X use TkAgg
 backend      : TkAgg
+#backend      : Qt4Agg
 
 # If you are using the Qt4Agg backend, you can choose here
 # to use the PyQt4 bindings or the newer PySide bindings to
@@ -289,6 +290,7 @@ xtick.minor.width    : 1.2    # minor tick width in points
 #xtick.color          : k      # color of the tick labels
 #xtick.labelsize      : medium # fontsize of the tick labels
 xtick.direction      : in     # direction: in, out, or inout
+xtick.position       : both     # 
 
 ytick.major.size     : 6.5      # major tick size in points
 ytick.minor.size     : 4      # minor tick size in points

@@ -1,8 +1,10 @@
 \usepackage{upgreek}
 \usepackage{tabularx}
+\usepackage{bm}
+\usepackage{scalefnt}
 
-\LetLtxMacro{\oldtextsc}{\textsc}
-\renewcommand{\textsc}[1]{\oldtextsc{\scalefont{1.2}#1}}
+%\LetLtxMacro{\oldtextsc}{\textsc}
+%\renewcommand{\textsc}[1]{\oldtextsc{\scalefont{1.2}#1}}
 
 %%%%%%%%%%%%%%%%%%%%%%
 %%      Spacing     %%%%%%%
@@ -33,8 +35,7 @@
 
 \newcommand{\vect}[1]{\boldsymbol{#1}}
 
-\renewcommand{\bmath}[1]{\mbox{ \boldmath $\!#1\!$ \unboldmath}}
-\renewcommand{\mathbfss}[1]{\mathsf{\mathbf{#1}}}
+\newcommand{\mathbfss}[1]{\mathsf{\mathbf{#1}}}
 
 \newcommand{\smallerSub}[1]{{\scriptscriptstyle{#1}}}
 \newcommand{\smallerSubTxn}[1]{\txn{\scriptsize{#1}}}
@@ -44,8 +45,8 @@
 %%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\conditional}[2]{\hbox{$\txn{P}(#1 \mid #2)$}}
 
-\newcommand{\thetab}{\hbox{$\bmath{\upTheta}$}}
-\newcommand{\Db}{\hbox{$\bmath{D}$}}
+\newcommand{\thetab}{\hbox{$\bm{\upTheta}$}}
+\newcommand{\Db}{\hbox{$\bm{D}$}}
 \newcommand{\prior}{\hbox{$\pi(\thetab)$}}
 \newcommand{\likelihood}{\hbox{$\mathcal{L}(\thetab)$}}
 
@@ -91,7 +92,7 @@
 %%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\Zsun}{\hbox{$\Z_\odot$}}
-\renewcommand{\micron}{\hbox{\,$\upmu$m}}
+\newcommand{\micron}{\hbox{\,$\upmu$m}}
 \newcommand{\yr}{\hbox{$\txn{yr}$}}
 \newcommand{\yrInv}{\hbox{$\yr^{-1}$}}
 \newcommand{\MsunyrInv}{\hbox{$\Msun\,\yrInv$}}
@@ -198,6 +199,8 @@
 \newcommand{\CO}{\hbox{$\txn{C}/\txn{O}$}}
 
 \newcommand{\Nion}{\hbox{$\dot{N}_\txn{ion}$}}
+
+\newcommand{\rhouv}{\hbox{$\rho_\textsc{uv}$}}
 
 \newcommand{\xiion}{\hbox{$\upxi_\txn{ion}$}}
 \newcommand{\xiionHII}{\hbox{$ \upxi_\txn{ion}^\smallerSubTxn{H\,\textsc{ii}}$}}

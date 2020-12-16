@@ -1,10 +1,15 @@
 
 export PATH="$PATH:/usr/local:/usr/local/bin:/opt/local/share/texmf-texlive/dvips/base:/bin:/usr/texbin:/Users/jchevall/bin:/Users/jchevall/bc99lx/bc03/src:/Users/jchevall/bc99lx/Mock:/Users/jchevall/bc99lx/is_97:/Users/jchevall/MILLENNIUM:/Users/jchevall/IDL:/Users/jchevall/idlutils/bin:/Applications/rsi/idl/bin:/Users/jchevall/TeX:/opt/openmpi/bin:opt/local/bin:/Users/jchevall/Bin:/Users/jchevall/profilers/TAU/apple/bin:/Users/jchevall/bin/wcstools-3.9.5"
 
-export PATH="/Users/jchevall/anaconda/bin:/usr/local/bin:/usr/local/Cellar/open-mpi/2.0.1/lib:/usr/local/Cellar/open-mpi/2.0.1/include:$PATH"
+export PATH="/Users/jchevall/anaconda3/bin:/usr/local/bin:/usr/local/Cellar/open-mpi/2.0.1/lib:/usr/local/Cellar/open-mpi/2.0.1/include:/Library/Frameworks/Python.framework/Versions/3.6/bin:$PATH"
 
 # Avoid shared history
 unsetopt share_history
+
+export SAVEHIST=10000
+
+# Skygo
+alias SkyGo_reset="\rm /Users/jchevall/Library/Application\ Support/Sky\ Go/qgd-redux-auth.json"
 
 # TOPCAT
 alias topcat="java -Xmx1024M -jar /Applications/TOPCAT.app/Contents/Resources/Java/topcat-full.jar"
@@ -39,19 +44,34 @@ export GDK_PIXBUF_MODULEDIR="/usr/local/lib/gdk-pixbuf-2.0/2.10.0/loaders"
 export GTK_PATH="/usr/local/lib/gtk-2.0"
 
 export HOMEBREW_GITHUB_API_TOKEN="7de96236b5b619d6e70682138ddb016c2eddad0a"
+export CHANGELOG_GITHUB_TOKEN="86fba8baa15053e40cfd05c39af97e1345b6ffea"
 
 alias push_docs="git add -u ; git commit -m \"Updated docs\" ;  git push origin master"
 
 alias gittag="git for-each-ref --sort=taggerdate --format '%(refname)' refs/tags"
 
-export PYTHONPATH="/Users/jchevall/python:/Users/jchevall/JWST/code" 
+export PYTHONPATH="/usr/local/lib/python2.7/site-packages:/Users/jchevall/python:/Users/jchevall/JWST/code" 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT:$PATH"
+
+if command -v pyenv 1>/dev/null 2>&1; then
+ eval "$(pyenv init -)"
+fi
+
 
 export JWSTPYTOOLS="/Users/jchevall/JWST/code/JWSTpytools-0.0.3"
+
+. /Users/jchevall/anaconda3/etc/profile.d/conda.sh
 
 # This solves some installation issues with Python Anaconda and UTF-8 encoding
 # see http://stackoverflow.com/questions/19961239/pelican-3-3-pelican-quickstart-error-valueerror-unknown-locale-utf-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+
+# Set Anaconda env 
+#conda activate base
+
+unset PYTHONPATH 
 
 # Default Fortran compiler
 GCC_VER="6"
@@ -69,7 +89,7 @@ export OMPI_CC=$CC
 export OMPI_CXX=$CXX
 
 # Intel Fortran
-source /opt/intel/composer_xe_2015.1.108/mkl/bin/intel64/mklvars_intel64.sh
+#source /opt/intel/composer_xe_2015.1.108/mkl/bin/intel64/mklvars_intel64.sh
 
 # Default print: two-sided, A4
 alias lp_default="lp -o sides=two-sided-long-edge -o media=A4"
@@ -169,11 +189,9 @@ export CPUPROFILE_FREQUENCY=1000
 #########################
 #
 # Common aliases
-alias rsync="rsync -avz"
+alias rsync="rsync -avz --progress"
 alias cp="cp -p"
 alias scp="scp -p"
-#
-alias del="mv -i \!* ~/.Trash"
 
 alias df90="cd /Users/jchevall/bc99lx/Mock/F90/NEW_F90/F90_TO_RELEASE"
 

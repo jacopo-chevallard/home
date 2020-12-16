@@ -17,10 +17,7 @@ if v:progname =~? "evim"
   finish
 endif
 
-" Fix backspace and delete issue
-set backspace=indent,eol,start
-set t_kb=
-set t_kD=[3~
+"autocmd vimenter * NERDTree
 
 " sets the language of the menu (gvim)
 "set langmenu=en_GB.UTF-8
@@ -29,11 +26,12 @@ set t_kD=[3~
 
 " Persistent undo
 " tell it to use an undo file
-" set undofile
+set hidden
+"set undofile
 " " set a directory to store the undo history
-" set undodir=/Users/jacopo/.vim/undo
-" set undolevels=10000         " How many undos
-" set undoreload=50000        " number of lines to save for undo
+"set undodir=~/.vim/undo
+"set undolevels=1000         " How many undos
+"set undoreload=5000        " number of lines to save for undo
 
 " Use Vim settings, rather then Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
@@ -78,8 +76,8 @@ set ttyfast         " smoother changes
 
 set ttymouse=xterm2
 
-set tabstop=2		" set tab = 4 spaces "
-set shiftwidth=2		" set shift width = 4 spaces "
+set tabstop=2		" set tab = 2 spaces "
+set shiftwidth=2		" set shift width = 2 spaces "
 set expandtab
 
 set pastetoggle=<F2>
@@ -172,9 +170,15 @@ autocmd! BufRead,BufNewFile *.ics setfiletype icalendar
 
 
 " tab navigation like firefox
-nnoremap <C-S-p> :tabprevious<CR>
-nnoremap <C-S-n>   :tabnext<CR>
-nnoremap <C-t>     :tabnew<CR>
+nnoremap <C-p> :bprevious<cr>
+nnoremap <C-n>   :bnext<CR>
+nnoremap <C-t>     :enew<CR>
+
+
+" tab navigation like firefox
+nnoremap <A-p> :tabprevious<CR>
+nnoremap <A-n>   :tabnext<CR>
+nnoremap <A-t>     :tabnew<CR>
 
 " Open new split panes to right and bottom, which feels more natural than
 " Vim’s default:
@@ -211,3 +215,67 @@ let g:vim_markdown_math = 1
 let g:vim_markdown_json_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 2
 let g:vim_markdown_folding_disabled = 1
+
+" Fix backspace and delete issue
+set backspace=indent,eol,start
+set t_kb=
+set t_kD=[3~
+
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+" add all your plugins here (note older versions of Vundle
+" used Bundle instead of Plugin)
+
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+"Plugin 'Valloric/YouCompleteMe'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+" Enable folding with the spacebar
+nnoremap <space> za
+
+" zR --> Open all folds. This sets 'foldlevel' to highest fold level.
+" zM --> Close all folds: set 'foldlevel' to 0.  'foldenable' will be set.
+
+" rainbow_parentheses options (https://github.com/kien/rainbow_parentheses.vim)
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['black',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
