@@ -5,7 +5,6 @@ import os, glob, sys
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
-from autoscale import autoscale_y
 import json 
 
 c_light = 2.99792e+18 # Ang/s
@@ -169,11 +168,11 @@ if __name__ == '__main__':
         sed = wl**2/c_light*sed
 
 
-    ax.set_xlabel('$\lambda / \mu\\textnormal{m}$')
-    if args.fnu:
-        ax.set_ylabel('$f_\\nu / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{Hz}^{-1} $')
-    else:
-        ax.set_ylabel('$f_\lambda / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{\AA}^{-1} $')
+    #ax.set_xlabel('$\lambda / \mu\\textnormal{m}$')
+    #if args.fnu:
+    #    ax.set_ylabel('$f_\\nu / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{Hz}^{-1} $')
+    #else:
+    #    ax.set_ylabel('$f_\lambda / \\textnormal{erg} \, \\textnormal{s}^{-1} \, \\textnormal{cm}^{-2} \, \\textnormal{\AA}^{-1} $')
 
     for i in range(len(args.row)):
         _sed = sed[i,:]
@@ -203,8 +202,6 @@ if __name__ == '__main__':
 
     if args.plot_log_flux: 
         ax.set_yscale('symlog')
-
-    autoscale_y(ax)
 
     plt.show()
     hdulist.close()

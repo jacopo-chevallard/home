@@ -38,9 +38,9 @@ if __name__ == '__main__':
         output = args.output
 
     message = "Name of the output FITS catalogue: " + output
-    print "\n" + "-"*len(message)
-    print message
-    print "-"*len(message) + '\n'
+    print ("\n" + "-"*len(message))
+    print (message)
+    print ("-"*len(message) + '\n')
 
     cols = list()
 
