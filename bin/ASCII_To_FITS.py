@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 from astropy.io import ascii
+from astropy.table import Table
 from astropy.io import fits
 import argparse
 import os
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     # Get parsed arguments
     args = parser.parse_args()    
 
-    data = ascii.read(args.input, Reader=ascii.basic.CommentedHeader, guess=False)
+    data = Table.read(args.input)
 
     if args.output is None:
         output = os.path.splitext(args.input)[0] + '.fits'
@@ -46,6 +47,7 @@ if __name__ == '__main__':
 
     for name in data.colnames:
 
+        ascii_name = name.encode('ascii', 'ignore').decode('ascii')
         form = data.dtype[name]
 
         # Convert the default double precision to single precision ("E" and "J" types in a FITS file)
@@ -54,9 +56,11 @@ if __name__ == '__main__':
         elif form == np.int64:
             form = 'J'
 
-        if isinstance(data[name][0], basestring):
+        if isinstance(data[name][0], str):
             if 'S' in str(form):
                 form = str(form).split('S')[1] + 'A'
+            if 'U' in str(form):
+                form = str(form).split('U')[1] + 'A'
             else:
                 form = str(form).split('a')[1] + 'A'
 
@@ -67,7 +71,7 @@ if __name__ == '__main__':
             data[name] = tmp
             form = 'L'
         
-        cols.append(fits.Column(name=name, array=data[name], format=form))
+        cols.append(fits.Column(name=ascii_name, array=data[name], format=form))
 
     colsDef = fits.ColDefs(cols)
 
