@@ -75,6 +75,8 @@ if __name__ == '__main__':
         columns_to_keep = list()
         for suffix in args.excluded_parameters:
             columns_to_keep = columns_to_keep + list(columns_names[~np.char.startswith(columns_names,suffix)])
+    else:
+        columns_to_keep = list(columns_names)
 
     columns_to_keep = _COLUMNS_TO_KEEP + columns_to_keep
 
