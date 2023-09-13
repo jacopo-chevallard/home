@@ -3,40 +3,15 @@
 import argparse
 import os
 from collections import OrderedDict
-
 import numpy as np
 from astropy.io import fits
 import sys
 from scipy import stats
 import math
+from multiprocessing import Pool, cpu_count
 
-if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        '--beagle-file',
-        help="Name of the Beagle output file(s).",
-        action="store", 
-        type=str, 
-        nargs="+",
-        dest="beagle_file", 
-        default=None
-    )
-
-    args = parser.parse_args()
-
-    if args.beagle_file is None:
-        files = list()
-        for file in os.listdir(os.getcwd()):
-            if file.endswith('BEAGLE.fits.gz') and os.path.getsize(file) > 0:
-                files.append(file)
-    else:
-        files = args.beagle_file
-
-    for f in files:
-
-        with fits.open(f, mode='update') as cat:
+def process_file(f):
+    with fits.open(f, mode='update') as cat:
         
             binArr = np.array([[1268.,1284.], \
                   [1309.,1316.], \
@@ -94,4 +69,41 @@ if __name__ == '__main__':
                 uv_slope[i] = slope
                 
             cat['GALAXY PROPERTIES'].data['UV_slope'] = uv_slope
-                
+          
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--beagle-file',
+        help="Name of the Beagle output file(s).",
+        action="store", 
+        type=str, 
+        nargs="+",
+        dest="beagle_file", 
+        default=None
+    )
+
+    parser.add_argument(
+        '-np',
+        help="Number of parallel executions",
+        action="store", 
+        type=int, 
+        dest="num_cores", 
+        default=None
+    )
+
+    args = parser.parse_args()
+
+    if args.beagle_file is None:
+        files = list()
+        for file in os.listdir(os.getcwd()):
+            if file.endswith('BEAGLE.fits.gz') and os.path.getsize(file) > 0:
+                files.append(file)
+    else:
+        files = args.beagle_file
+
+    # Use multiprocessing to process files in parallel
+    num_cores = cpu_count() if args.num_cores is None else args.num_cores 
+    with Pool(num_cores) as pool:
+        pool.map(process_file, files)
