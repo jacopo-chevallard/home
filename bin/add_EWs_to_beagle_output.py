@@ -49,13 +49,14 @@ if __name__ == '__main__':
         # Create an empty dictionary of numpy array which will containe the EWs
         EWs = OrderedDict()
         integrated_fluxes = OrderedDict()
+        continuum_levels = OrderedDict()
         for line in lines:
             EWs[line] = np.zeros(n_rows, dtype=np.float32)
 
         SEDs = hdulist['FULL SED'].data[:,:]
 
         # Cycle across all the lines for which we compute the EWs
-        for key, value in lines.iteritems():
+        for key, value in lines.items():
 
             # Compute the average left continuum
             il0 = np.searchsorted(wl, value["continuum_left"][0]) ; il0 -= 1
@@ -72,6 +73,8 @@ if __name__ == '__main__':
                 ir0 -= 1
             flux_right = np.ravel(np.trapz(SEDs[:,ir0:ir1+1], x=wl[ir0:ir1+1], axis=1)) / (wl[ir1]-wl[ir0])
             wl_right = 0.5*(wl[ir0]+wl[ir1])
+
+            continuum_levels[key] = 0.5*(flux_right+flux_left)
 
             # Approximate the continuum with a straght line
             grad = (flux_right-flux_left)/(wl_right-wl_left)
@@ -112,8 +115,8 @@ if __name__ == '__main__':
 
         # Create a list of columns from the dictionary containing the EWs
         cols = list()
-        for key, value in EWs.iteritems():
-            col = fits.Column(name=str(key), format='E', array=value)
+        for key, value in EWs.items():
+            col = fits.Column(name=str(key)+"_EW", format='E', array=value)
             cols.append(col)
 
         # Create a new binary table HDU 
@@ -129,14 +132,31 @@ if __name__ == '__main__':
 
         # Create a list of columns from the dictionary containing the integrated fluxes
         cols = list()
-        for key, value in integrated_fluxes.iteritems():
-            col = fits.Column(name=str(key), format='E', array=value)
+        for key, value in integrated_fluxes.items():
+            col = fits.Column(name=str(key)+"_flux", format='E', array=value)
             cols.append(col)
 
         # Create a new binary table HDU 
         columns = fits.ColDefs(cols)
         new_hdu = fits.BinTableHDU.from_columns(columns)
         new_hdu.name = 'INTEGRATED FLUXES'
+
+        # Add the new HDU to the Beagle file
+        if new_hdu.name in hdulist:
+            hdulist[new_hdu.name] = new_hdu
+        else:
+            hdulist.append(new_hdu)
+
+        # Create a list of columns from the dictionary containing the continuum levels
+        cols = list()
+        for key, value in continuum_levels.items():
+            col = fits.Column(name=str(key)+"_cont", format='E', array=value)
+            cols.append(col)
+
+        # Create a new binary table HDU 
+        columns = fits.ColDefs(cols)
+        new_hdu = fits.BinTableHDU.from_columns(columns)
+        new_hdu.name = 'CONTINUUM LEVELS'
 
         # Add the new HDU to the Beagle file
         if new_hdu.name in hdulist:
