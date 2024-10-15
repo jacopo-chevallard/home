@@ -28,10 +28,18 @@ if __name__ == '__main__':
         dest="output" 
     )
 
+    parser.add_argument(
+        '--format',
+        help="ASCII format of the input catalogue",
+        action="store", 
+        type=str, 
+        dest="format" 
+    )
+
     # Get parsed arguments
     args = parser.parse_args()    
 
-    data = Table.read(args.input)
+    data = Table.read(args.input, format=args.format)
 
     if args.output is None:
         output = os.path.splitext(args.input)[0] + '.fits'
