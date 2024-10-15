@@ -164,7 +164,7 @@ if __name__ == '__main__':
                 tmpCol = Column(sed, name='flux_'+str(i), dtype=np.float32, format='%.5E')
                 columns.append(tmpCol)
         else:
-            sed = SEDs[:]
+            sed = SEDs[loc]
             tmpCol = Column(sed, name='flux_0', dtype=np.float32, format='%.5E')
             columns.append(tmpCol)
 
