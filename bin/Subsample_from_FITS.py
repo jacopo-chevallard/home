@@ -118,7 +118,7 @@ if __name__ == '__main__':
         '--SN-threshold',
         help="S/N threshold to select objects",
         action="store", 
-        type=np.float32, 
+        type=float, 
         dest="SN_threshold"
     )
 
@@ -126,7 +126,7 @@ if __name__ == '__main__':
         '--SN-n-bands',
         help="Minimum number of photometric bands that must satisfy the S/N threshold to select objects",
         action="store", 
-        type=np.int, 
+        type=int, 
         dest="SN_n_bands"
     )
 
@@ -152,7 +152,7 @@ if __name__ == '__main__':
         if args.ID_file_list.endswith(('fits', 'fit', 'FITS', 'FIT')):
             tmp = fits.open(args.ID_file_list)[1].data
         else:
-            tmp = ascii.read(args.ID_file_list, Reader=ascii.basic.CommentedHeader)
+            tmp = ascii.read(args.ID_file_list, Reader=ascii.basic.CommentedHeader, converters={args.ID_key: str})
         ID_to_copy = tmp[args.ID_key]
 
     # Check if you want to select only objects satisfying a S/N in given bands
@@ -168,7 +168,6 @@ if __name__ == '__main__':
         SN_mask = np.zeros((n_rows,n_bands), dtype=int)
 
         for i, band in enumerate(args.band_list):
-            print "band: ", band
             if args.error_prefix is not None:
                 err = args.error_prefix + band
             else:
@@ -209,15 +208,15 @@ if __name__ == '__main__':
             mask = np.random.permutation(mask)
 
     elif ID_to_copy is not None:
-        if isinstance(hdu.data[args.ID_key][0], basestring):
+        if isinstance(hdu.data[args.ID_key][0], str):
             for ID in ID_to_copy:
                 #print "ID----> ", ID
                 #indx = np.where(hdu.data['ID'] == ID)[0]
                 #print "indx: ", indx
-                mask[hdu.data[args.ID_key] == ID] = True
+                mask[hdu.data[args.ID_key] == str(ID)] = True
         else:
             for i in range(len(ID_to_copy)):
-                i1 = bisect.bisect_left(hdu.data[args.ID_key], ID_to_copy[i])
+                i1 = bisect.bisect_left(hdu.data[args.ID_key], int(ID_to_copy[i]))
                 # You may have (numeric) IDs in the input list which go beyond
                 # the available IDs in the orginal catalogue, in which case 
                 # the bisection will give an index equal to the length of the
